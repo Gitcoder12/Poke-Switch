@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#18211b">
+    <meta name="description" content="A fan-made catalog for finding official ways to play Pokémon games and keeping a personal waitlist.">
+    <title>Poke-Switch | Game Library</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#top" aria-label="Poke-Switch home">
+        <span class="brand-mark" aria-hidden="true"><i></i></span>
+        <span>POKE<span class="brand-dash">/</span>SWITCH</span>
+      </a>
+      <div class="topbar-note"><span class="status-dot"></span> FAN-MADE GAME CATALOG</div>
+      <a class="topbar-link" href="https://www.pokemon.com/us/pokemon-video-games" target="_blank" rel="noreferrer">Official game info <span aria-hidden="true">↗</span></a>
+    </header>
+
+    <main id="top" class="app-shell">
+      <section class="intro" aria-labelledby="page-title">
+        <div>
+          <p class="eyebrow">ONE PLACE FOR YOUR NEXT ADVENTURE</p>
+          <h1 id="page-title">Your game shelf<span class="title-period">.</span></h1>
+          <p class="intro-copy">Browse the series, check official play options, and keep track of the titles you’re waiting for.</p>
+        </div>
+        <div class="intro-mark" aria-hidden="true"><span>POKÉMON</span><b>GAME<br>INDEX</b><i>NO. 001—∞</i></div>
+      </section>
+
+      <section class="matcher" id="pc-matcher" aria-labelledby="matcher-title">
+        <div class="matcher-panel">
+          <div class="matcher-heading">
+            <div>
+              <p class="eyebrow">PC MATCHER / FAN PROJECTS</p>
+              <h2 id="matcher-title">Can your PC run it?</h2>
+              <p>Compare your hardware with a fan game's published minimum specs. Nothing is auto-detected or downloaded.</p>
+            </div>
+            <span class="matcher-chip">LOCAL CHECK</span>
+          </div>
+          <div class="matcher-fields">
+            <fieldset class="matcher-group">
+              <legend>GAME REQUIREMENTS</legend>
+              <label class="field-label" for="matcher-game">FAN GAME</label>
+              <select id="matcher-game" class="matcher-input"></select>
+              <p class="matcher-hint" id="matcher-game-note">Use the game's developer page to confirm minimum specs.</p>
+              <div class="spec-grid">
+                <label><span>MIN OS</span><select id="requirement-os" class="matcher-input"><option value="">Not listed</option><option value="any">Any desktop OS</option><option value="windows">Windows</option><option value="macos">macOS</option><option value="linux">Linux</option></select></label>
+                <label><span>RAM / GB</span><input id="requirement-ram" class="matcher-input" type="number" min="1" max="512" step="1" inputmode="numeric" placeholder="Not listed"></label>
+                <label><span>CPU CORES</span><input id="requirement-cores" class="matcher-input" type="number" min="1" max="256" step="1" inputmode="numeric" placeholder="Not listed"></label>
+                <label><span>GPU VRAM / GB</span><input id="requirement-vram" class="matcher-input" type="number" min="0" max="128" step="0.5" inputmode="decimal" placeholder="Not listed"></label>
+              </div>
+            </fieldset>
+            <fieldset class="matcher-group">
+              <legend>YOUR PC</legend>
+              <label class="field-label" for="profile-os">OPERATING SYSTEM</label>
+              <select id="profile-os" class="matcher-input"><option value="windows">Windows</option><option value="macos">macOS</option><option value="linux">Linux</option></select>
+              <p class="matcher-hint">Enter your specs manually. Values stay in this browser.</p>
+              <div class="spec-grid">
+                <label><span>RAM / GB</span><input id="profile-ram" class="matcher-input" type="number" min="1" max="512" step="1" inputmode="numeric" placeholder="e.g. 16"></label>
+                <label><span>CPU CORES</span><input id="profile-cores" class="matcher-input" type="number" min="1" max="256" step="1" inputmode="numeric" placeholder="e.g. 8"></label>
+                <label><span>GPU VRAM / GB</span><input id="profile-vram" class="matcher-input" type="number" min="0" max="128" step="0.5" inputmode="decimal" placeholder="e.g. 8"></label>
+              </div>
+            </fieldset>
+          </div>
+          <div class="matcher-footer">
+            <button id="compare-pc" class="compare-button" type="button">Compare specs <span aria-hidden="true">→</span></button>
+            <p id="matcher-result" class="matcher-result" role="status" aria-live="polite">Choose a fan game and enter its published minimums to compare.</p>
+          </div>
+        </div>
+        <figure class="matcher-photo">
+          <img src="https://images.unsplash.com/photo-1593640408182-31c70c8268f5?auto=format&amp;fit=crop&amp;w=1200&amp;q=85" alt="Gaming PC, monitor, keyboard, and mouse on a desk" loading="lazy">
+          <figcaption><span>YOUR SETUP, YOUR CALL</span><a href="https://unsplash.com/license" target="_blank" rel="noreferrer">Photo via Unsplash ↗</a></figcaption>
+        </figure>
+      </section>
+
+      <section class="catalog-layout" aria-label="Game catalog">
+        <aside class="sidebar" aria-label="Catalog controls">
+          <div class="sidebar-heading"><span>YOUR LIBRARY</span><button class="text-button" id="add-title" type="button">＋ Add title</button></div>
+          <nav class="filter-list" aria-label="Filter games">
+            <button class="filter-button is-active" data-filter="all" type="button"><span class="filter-icon">▦</span> All titles <span class="filter-count" id="count-all">0</span></button>
+            <button class="filter-button" data-filter="current" type="button"><span class="filter-icon">↗</span> Official options <span class="filter-count" id="count-current">0</span></button>
+            <button class="filter-button" data-filter="legacy" type="button"><span class="filter-icon">◷</span> Legacy releases <span class="filter-count" id="count-legacy">0</span></button>
+            <button class="filter-button" data-filter="fan" type="button"><span class="filter-icon">✳</span> Fan projects <span class="filter-count" id="count-fan">0</span></button>
+            <button class="filter-button" data-filter="waitlist" type="button"><span class="filter-icon">☆</span> My waitlist <span class="filter-count" id="count-waitlist">0</span></button>
+          </nav>
+          <div class="sidebar-rule"></div>
+          <label class="field-label" for="platform-filter">PLATFORM</label>
+          <select id="platform-filter" class="platform-select">
+            <option value="all">All platforms</option>
+          </select>
+          <div class="side-note">
+            <span class="side-note-icon" aria-hidden="true">i</span>
+            <p>Availability can vary by region. Always check the publisher or platform store for current options.</p>
+          </div>
+        </aside>
+
+        <section class="catalog-main" aria-label="Titles">
+          <div class="catalog-toolbar">
+            <div class="results-label"><span id="results-count">0 TITLES</span><span class="results-divider">/</span><span id="results-filter">ALL RELEASES</span></div>
+            <label class="search-box">
+              <span class="search-icon" aria-hidden="true">⌕</span>
+              <input id="search" type="search" placeholder="Search games or platforms" autocomplete="off" aria-label="Search games or platforms">
+              <kbd>/</kbd>
+            </label>
+          </div>
+          <div id="game-list" class="game-list" aria-live="polite"></div>
+        </section>
+
+        <aside class="detail-panel" id="detail-panel" aria-live="polite" aria-label="Selected game details">
+          <div class="detail-empty">
+            <span class="detail-glyph" aria-hidden="true">✳</span>
+            <p class="eyebrow">PICK A TITLE</p>
+            <h2>Your next save starts here.</h2>
+            <p>Select a game to see its platform, release status, and official information.</p>
+          </div>
+        </aside>
+      </section>
+
+      <footer class="page-footer">
+        <p>Independent fan project. Not affiliated with or endorsed by Nintendo, Game Freak, or The Pokémon Company.</p>
+        <p>No game files, ROMs, keys, or copyrighted artwork are included or hosted here.</p>
+      </footer>
+    </main>
+
+    <dialog id="add-dialog" class="add-dialog">
+      <form id="add-form" method="dialog">
+        <div class="dialog-heading"><div><p class="eyebrow">PERSONAL CATALOG</p><h2>Add a title</h2></div><button class="close-button" type="button" id="close-dialog" aria-label="Close">×</button></div>
+        <label class="field-label" for="new-name">GAME TITLE</label>
+        <input id="new-name" class="form-input" name="name" required maxlength="80" placeholder="e.g. Pokémon Pinball">
+        <label class="field-label" for="new-kind">PROJECT TYPE</label>
+        <select id="new-kind" class="form-input" name="kind"><option value="official">Official Pokémon release</option><option value="fan">Fan-made PC project</option></select>
+        <label class="field-label" for="new-platform">PLATFORM</label>
+        <input id="new-platform" class="form-input" name="platform" required maxlength="50" placeholder="e.g. Game Boy Color">
+        <div id="official-status-field">
+          <label class="field-label" for="new-status">STATUS</label>
+          <select id="new-status" class="form-input" name="status"><option value="current">Official option to check</option><option value="legacy">Legacy release</option></select>
+        </div>
+        <label class="field-label" for="new-link">OFFICIAL OR CREATOR PAGE</label>
+        <input id="new-link" class="form-input" name="link" type="url" placeholder="https://">
+        <p class="dialog-footnote">Optional minimums from the project page. Unknown values stay blank.</p>
+        <label class="field-label" for="new-req-os">MINIMUM OS</label>
+        <select id="new-req-os" class="form-input" name="reqOs"><option value="">Not listed</option><option value="any">Any desktop OS</option><option value="windows">Windows</option><option value="macos">macOS</option><option value="linux">Linux</option></select>
+        <label class="field-label" for="new-req-ram">MINIMUM RAM (GB)</label>
+        <input id="new-req-ram" class="form-input" name="reqRam" type="number" min="1" max="512" step="1" inputmode="numeric">
+        <label class="field-label" for="new-req-cores">MINIMUM CPU CORES</label>
+        <input id="new-req-cores" class="form-input" name="reqCores" type="number" min="1" max="256" step="1" inputmode="numeric">
+        <label class="field-label" for="new-req-vram">MINIMUM GPU VRAM (GB)</label>
+        <input id="new-req-vram" class="form-input" name="reqVram" type="number" min="0" max="128" step="0.5" inputmode="decimal">
+        <button class="submit-button" type="submit">Add to catalog <span aria-hidden="true">→</span></button>
+        <p class="dialog-footnote">This stays in this browser only. Don’t add links to unauthorized copies.</p>
+      </form>
+    </dialog>
+  </body>
+</html>
