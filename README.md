@@ -33,3 +33,12 @@ These are independent, unofficial fan projects:
 Poke-Switch is an independent fan project and is not affiliated with or endorsed by Nintendo, Game Freak, Creatures Inc., or The Pokémon Company. Pokémon and related intellectual property belong to their respective rights holders.
 
 Poke-Switch does not distribute unauthorized game files or copyrighted assets. Users are responsible for complying with applicable laws and third-party terms.
+
+---
+
+## Project handbook
+
+- [Activity log](ACTIVITY_LOG.md) · [Feature upgrade plan](FEATURE_UPGRADE_PLAN.md)
+- [Company and team fit](COMPANY_FIT.md) · [README explanation draft](README_ADDENDUM_DRAFT.md)
+- [README quality checklist](README_QUALITY_CHECKLIST.md)
+- [Contributing](CONTRIBUTING.md) · [Agent instructions](AGENTS.md) · [Agent skills](SKILLS.md)
