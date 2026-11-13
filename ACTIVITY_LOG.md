@@ -17,3 +17,12 @@ Browser-based catalogue and request/voting concept with official Pokémon/Ninten
 | YYYY-MM-DD | name | link | paths | exact link-check/test | pass / fail / not run | evidence |
 
 Record whether a title is official or fan-made and include a source. Do not add copyrighted game files or unofficial download mirrors.
+
+## Portfolio documentation rollout — 2026-11-13
+
+- Documentation PR: https://github.com/Gitcoder12/Poke-Switch/pull/1
+- Added project-specific feature roadmap, company-fit mapping, two-level README guide and README quality checklist.
+- Added contribution instructions and scoped agent/skills guidance; safety, provenance or scope boundaries are stated in the docs.
+- README now has a plain-language overview and technical/research view while retaining its existing core content.
+- Validation: documentation/source review only; no runtime test or deployment is claimed by this docs PR.
+- Status: draft PR, not merged.
