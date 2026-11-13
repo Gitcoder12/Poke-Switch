@@ -42,3 +42,17 @@ Poke-Switch does not distribute unauthorized game files or copyrighted assets. U
 - [Company and team fit](COMPANY_FIT.md) · [README explanation draft](README_ADDENDUM_DRAFT.md)
 - [README quality checklist](README_QUALITY_CHECKLIST.md)
 - [Contributing](CONTRIBUTING.md) · [Agent instructions](AGENTS.md) · [Agent skills](SKILLS.md)
+
+## Understanding the project
+
+### In plain language
+
+A community website where players can browse official Pokémon games and suggest or vote for game releases and features they would like to see.
+
+### Technical and research view
+
+Browser-based catalogue and request/voting concept with official Pokémon/Nintendo links and references to independent fan projects. It must remain an unofficial fan project, respect trademarks/copyright, and distinguish official products from community fan creations. Do not host ROMs, copyrighted game assets or unauthorised downloads.
+
+Document catalogue schema, source attribution, official/fan status, vote handling, duplicate detection, moderation queue and data persistence.
+
+For future work, see [FEATURE_UPGRADE_PLAN.md](FEATURE_UPGRADE_PLAN.md), [ACTIVITY_LOG.md](ACTIVITY_LOG.md), [COMPANY_FIT.md](COMPANY_FIT.md) and [CONTRIBUTING.md](CONTRIBUTING.md).
