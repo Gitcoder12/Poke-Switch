@@ -4,6 +4,7 @@ const test = require("node:test");
 const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const path = require("node:path");
+const vm = require("node:vm");
 
 const root = path.resolve(__dirname, "..");
 const html = fs.readFileSync(path.join(root, "index.html"), "utf8");
@@ -222,4 +223,22 @@ test("wishboard input is bounded, duplicate titles are rejected, and votes remai
   assert.match(app, /function toggleVote\(id\)/);
   assert.ok(app.includes("poke-switch:voted"));
   assert.ok(app.includes("poke-switch:requests"));
+});
+
+
+test("browser data bundles parse and the game catalogue loads real records", () => {
+  const sandbox = { window: {} };
+  vm.runInNewContext(catalogue, sandbox, { filename: "data/catalogue.js" });
+  vm.runInNewContext(regionData, sandbox, { filename: "data/regions.js" });
+
+  const data = sandbox.window.PokeSwitchData;
+  assert.ok(data, "The catalogue must populate window.PokeSwitchData");
+  assert.ok(Array.isArray(data.games), "The game list must be an array");
+  assert.ok(data.games.length >= 50, "The game library must not silently become empty");
+  assert.ok(data.games.every(game => game.title && game.kind && game.platform),
+    "Every game record needs a title, kind and platform");
+  assert.ok(Array.isArray(data.fanProjects) && data.fanProjects.length >= 10);
+  assert.ok(Array.isArray(data.mobileApps) && data.mobileApps.length >= 8);
+  assert.ok(Array.isArray(sandbox.window.PokeSwitchRegions) &&
+    sandbox.window.PokeSwitchRegions.length === 9);
 });
