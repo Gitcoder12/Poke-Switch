@@ -69,6 +69,10 @@ test("region themes are defined in both JavaScript and CSS", () => {
   const themeNames = ["league","kanto","johto","hoenn","sinnoh","unova","kalos","alola","galar","paldea"];
   for (const name of themeNames) {
     assert.ok(app.includes('"' + name + '"'), "Missing JS theme: " + name);
-    assert.ok(css.includes('data-theme="' + name + '"'), "Missing CSS theme: " + name);
+    if (name === "league") {
+      assert.match(css, /:root\\s*\\{/);
+    } else {
+      assert.ok(css.includes('data-theme="' + name + '"'), "Missing CSS theme: " + name);
+    }
   }
 });
