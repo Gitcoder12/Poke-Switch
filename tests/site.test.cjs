@@ -34,10 +34,11 @@ test("all requested product areas are present", () => {
   for (const feature of [
     "pokemon-species", "pokemon-species/", "type/",
     "localStorage", "poke-switch:requests", "poke-switch:voted",
-    "data-theme-choice", "game-generation"
+    "data-theme-choice"
   ]) {
     assert.ok(app.includes(feature), "Missing feature hook: " + feature);
   }
+  assert.match(html, /id="game-generation"/);
 });
 
 test("PokéAPI responses are cached in browser storage", () => {
