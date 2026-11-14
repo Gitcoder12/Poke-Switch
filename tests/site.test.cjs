@@ -4,12 +4,14 @@ const test = require("node:test");
 const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const path = require("node:path");
+const vm = require("node:vm");
 
 const root = path.resolve(__dirname, "..");
 const html = fs.readFileSync(path.join(root, "index.html"), "utf8");
 const app = fs.readFileSync(path.join(root, "assets", "js", "app.js"), "utf8");
 const css = fs.readFileSync(path.join(root, "assets", "css", "styles.css"), "utf8");
 const catalogue = fs.readFileSync(path.join(root, "data", "catalogue.js"), "utf8");
+const regionData = fs.readFileSync(path.join(root, "data", "regions.js"), "utf8");
 
 test("the Windows launcher starts the documented local server", () => {
   const launcher = fs.readFileSync(path.join(root, "run-local.bat"), "utf8");
@@ -20,6 +22,7 @@ test("the Windows launcher starts the documented local server", () => {
 test("the page loads local styles, catalogue data and application code", () => {
   assert.match(html, /href="assets\/css\/styles\.css"/);
   assert.match(html, /src="data\/catalogue\.js"/);
+  assert.match(html, /src="data\/regions\.js"/);
   assert.match(html, /src="assets\/js\/app\.js"/);
   assert.ok(fs.existsSync(path.join(root, "assets", "css", "styles.css")));
   assert.ok(fs.existsSync(path.join(root, "assets", "js", "app.js")));
@@ -116,8 +119,8 @@ test("README explains the Windows launcher and manual local URL without AI notes
 });
 
 
-test("the app has six independent route views and a persistent navigation shell", () => {
-  const routes = ["discover", "games", "pokedex", "fan-games", "mobile", "requests"];
+test("the app has seven independent route views and a persistent navigation shell", () => {
+  const routes = ["discover", "games", "regions", "pokedex", "fan-games", "mobile", "requests"];
   for (const route of routes) {
     assert.ok(html.includes('data-view="' + route + '"'), "Missing view: " + route);
     assert.ok(html.includes('data-view-target="' + route + '"'), "Missing navigation item: " + route);
@@ -132,8 +135,110 @@ test("the app has six independent route views and a persistent navigation shell"
 });
 
 test("navigation changes views rather than scrolling to page anchors", () => {
+  // showView iterates over NodeLists; a single querySelector result is not iterable.
+  assert.ok(app.includes(String.fromCharCode(36).repeat(2)+'(".app-view").forEach(view=>'));
+  assert.ok(app.includes(String.fromCharCode(36).repeat(2)+'(".side-link[data-view-target]").forEach(link=>'));
+  assert.ok(app.includes("const initial=location.hash.slice(1);"));
+  assert.ok(app.includes('showView(initial||"discover",false);'));
   assert.ok(app.includes("function showView("));
   assert.ok(app.includes("history.pushState"));
   assert.ok(app.includes('closest("[data-view-target]")'));
   assert.ok(css.includes(".app-view{height:100%;min-height:0;overflow-y:auto"));
+});
+
+test("the region atlas has nine sourced maps and opens a dedicated detail dialog", () => {
+  const ids = [...regionData.matchAll(/id:"([a-z]+)",name:/g)].map(match => match[1]);
+  assert.deepEqual(ids, ["kanto","johto","hoenn","sinnoh","unova","kalos","alola","galar","paldea"]);
+  assert.equal((regionData.match(/image:"https:\/\//g) || []).length, 9);
+  assert.equal((regionData.match(/source:"https:\/\//g) || []).length, 9);
+  assert.match(html, /id="region-grid"/);
+  assert.match(html, /id="region-dialog"/);
+  assert.match(app, /function renderRegions\(/);
+  assert.match(app, /function openRegion\(/);
+  assert.match(app, /function initRegionDialog\(/);
+});
+
+test("Pokémon detail viewer exposes available official, shiny and sprite variants", () => {
+  assert.match(app, /pokemon\.sprites\.other/);
+  assert.match(app, /official-artwork/);
+  assert.match(app, /front_shiny/);
+  assert.match(app, /front_default/);
+  assert.match(app, /data-gallery-index/);
+  assert.match(html, /id="pokemon-dialog-content"/);
+});
+
+test("game cards show only the platform directories supported by catalogue metadata", () => {
+  assert.match(app, /function renderStoreBadges\(game\)/);
+  assert.match(app, /APP_STORE_DEVELOPER_URL/);
+  assert.match(app, /GOOGLE_PLAY_DEVELOPER_URL/);
+  assert.match(app, /NINTENDO_GAME_HUB/);
+  assert.match(app, /Nintendo Switch\|Switch 2/);
+  assert.match(app, /Mobile\|Android\|iOS/);
+});
+
+test("the interface does not include decorative emoji glyphs", () => {
+  for (const [label, source] of [["HTML", html], ["application", app], ["catalogue", catalogue]]) {
+    assert.doesNotMatch(source, /[⚡✳✉⚔☕☺]/u, label + " should use type and CSS accents instead");
+  }
+});
+
+
+test("all app screens remain inside one shared main landmark", () => {
+  const mainOpen = html.split("<main").length - 1;
+  const mainClose = html.split("</main>").length - 1;
+  assert.equal(mainOpen, 1, "The document must have one main landmark");
+  assert.equal(mainClose, 1, "The main landmark must close exactly once");
+  const mainStart = html.indexOf("<main");
+  const mainEnd = html.indexOf("</main>");
+  const viewStarts = [...html.matchAll(/<section class="app-view/g)].map(match => match.index);
+  assert.equal(viewStarts.length, 7, "All seven app views must exist");
+  for (const start of viewStarts) {
+    assert.ok(start > mainStart && start < mainEnd, "Every app view must stay inside the shared main landmark");
+  }
+});
+
+
+test("game cards and the PC wishboard render PokéAPI artwork with a sprite fallback", () => {
+  assert.match(app, /function resolveGameArtwork\(title, region\)/);
+  assert.match(app, /function renderGameArtwork\(game\)/);
+  assert.match(app, /function renderWishArtwork\(request\)/);
+  assert.match(app, /function bindPokemonArtworkFallbacks\(root\)/);
+  assert.ok(app.includes("other/official-artwork/"));
+  assert.ok(app.includes("data-pokemon-art"));
+  assert.ok(app.includes("data-fallback"));
+  assert.ok(app.includes("Koraidon + Miraidon"));
+  assert.ok(app.includes("Zacian + Zamazenta"));
+  assert.ok(app.includes("renderGameArtwork(game)"));
+  assert.ok(app.includes("renderWishArtwork(request)"));
+  assert.ok(app.includes("bindPokemonArtworkFallbacks(grid)"));
+  assert.ok(app.includes("bindPokemonArtworkFallbacks(list)"));
+  assert.match(html, /id="request-list"[^>]*aria-live="polite"/);
+  assert.match(css, /\.game-card-art\{/);
+  assert.match(css, /\.wish-artwork\{/);
+});
+
+test("wishboard input is bounded, duplicate titles are rejected, and votes remain local", () => {
+  assert.match(app, /title\.length<3 \|\| title\.length>90/);
+  assert.match(app, /requests\.find\(item=>item\.title\.toLowerCase\(\)===title\.toLowerCase\(\)\)/);
+  assert.match(app, /function toggleVote\(id\)/);
+  assert.ok(app.includes("poke-switch:voted"));
+  assert.ok(app.includes("poke-switch:requests"));
+});
+
+
+test("browser data bundles parse and the game catalogue loads real records", () => {
+  const sandbox = { window: {} };
+  vm.runInNewContext(catalogue, sandbox, { filename: "data/catalogue.js" });
+  vm.runInNewContext(regionData, sandbox, { filename: "data/regions.js" });
+
+  const data = sandbox.window.PokeSwitchData;
+  assert.ok(data, "The catalogue must populate window.PokeSwitchData");
+  assert.ok(Array.isArray(data.games), "The game list must be an array");
+  assert.ok(data.games.length >= 50, "The game library must not silently become empty");
+  assert.ok(data.games.every(game => game.title && game.kind && game.platform),
+    "Every game record needs a title, kind and platform");
+  assert.ok(Array.isArray(data.fanProjects) && data.fanProjects.length >= 10);
+  assert.ok(Array.isArray(data.mobileApps) && data.mobileApps.length >= 8);
+  assert.ok(Array.isArray(sandbox.window.PokeSwitchRegions) &&
+    sandbox.window.PokeSwitchRegions.length === 9);
 });

@@ -55,7 +55,7 @@ window.PokeSwitchData = Object.freeze({
   {title:"Pokémon Friends",gen:"spin-off",kind:"spin-off",region:"Puzzle world",platform:"Nintendo Switch / Mobile",summary:"A puzzle adventure with collectible plush Pokémon."},
   {title:"Pokémon Trading Card Game",gen:"spin-off",kind:"spin-off",region:"Card game",platform:"Game Boy",summary:"The classic digital Pokémon trading-card game."},
   {title:"Pokémon Trading Card Game Pocket",gen:"spin-off",kind:"spin-off",region:"Card game",platform:"Mobile",summary:"Collect digital Pokémon cards on mobile."}
-];
+],
 
   fanProjects: [
   {name:"Pokémon Reborn",kind:"story",type:"Story adventure",platform:"Windows · macOS · Linux",desc:"A long-form story adventure known for its field-effect battle system.",url:"https://www.rebornevo.com/",label:"Developer community"},
@@ -72,20 +72,20 @@ window.PokeSwitchData = Object.freeze({
   {name:"Pokémon Unbound",kind:"romhack",type:"ROM hack",platform:"GBA emulator · your own game copy",desc:"A FireRed ROM hack. Requires an original game file you have the legal right to use; this site does not link to ROMs.",url:"https://www.pokecommunity.com/threads/pok%C3%A9mon-unbound-completed.382178/",label:"Creator thread"},
   {name:"Pokémon 3D",kind:"3d",type:"3D adventure",platform:"PC",desc:"A fan-made 3D take on the Johto-era world.",url:"https://pokemon3d.net/",label:"Project website"},
   {name:"Pokémon MMO 3D",kind:"3d",type:"3D online battles",platform:"Windows · Linux",desc:"A fan-made 3D project focused on real-time Pokémon battles.",url:"https://pokemon-mmo-3d.com/en",label:"Project website"}
-];
+],
 
   mobileApps: [
   {name:"Pokémon GO",category:"Location-based adventure",platform:"Android · iOS",url:"https://in.portal-pokemon.com/apps/",symbol:"⌖",note:"Official Pokémon India app directory"},
   {name:"Pokémon Trading Card Game Pocket",category:"Digital card collecting",platform:"Android · iOS",url:"https://tcgpocket.pokemon.com/en-us/",symbol:"▤",note:"Official app website"},
   {name:"Pokémon Sleep",category:"Sleep-tracking game",platform:"Android · iOS",url:"https://www.pokemonsleep.net/en/",symbol:"☾",note:"Official app website"},
   {name:"Pokémon UNITE",category:"Team strategy battles",platform:"Android · iOS · Nintendo Switch",url:"https://unite.pokemon.com/en-us/",symbol:"✦",note:"Official game website"},
-  {name:"Pokémon Champions",category:"Competitive battles",platform:"Android · iOS · Nintendo Switch",url:"https://champions.pokemon.com/en-us/",symbol:"⚔",note:"Official game website"},
+  {name:"Pokémon Champions",category:"Competitive battles",platform:"Android · iOS · Nintendo Switch",url:"https://champions.pokemon.com/en-us/",symbol:"CH",note:"Official game website"},
   {name:"Pokémon Friends",category:"Puzzle adventure",platform:"Android · iOS · Nintendo Switch",url:"https://www.pokemon-friends.jp/en/?region=GB",symbol:"✿",note:"Official game website"},
   {name:"Pokémon Masters EX",category:"Trainer battles",platform:"Android · iOS",url:"https://pokemonmasters-game.com/en-US",symbol:"♜",note:"Official game website"},
-  {name:"Pokémon Café ReMix",category:"Puzzle café",platform:"Android · iOS · Nintendo Switch",url:"https://in.portal-pokemon.com/apps/",symbol:"☕",note:"Official Pokémon India app directory"},
+  {name:"Pokémon Café ReMix",category:"Puzzle café",platform:"Android · iOS · Nintendo Switch",url:"https://in.portal-pokemon.com/apps/",symbol:"CA",note:"Official Pokémon India app directory"},
   {name:"Pokémon HOME",category:"Pokémon storage service",platform:"Android · iOS · Nintendo Switch",url:"https://home.pokemon.com/en-us/",symbol:"⌂",note:"Official Pokémon HOME website"},
   {name:"Pokémon Quest",category:"Island adventure",platform:"Android · iOS · Nintendo Switch",url:"https://in.portal-pokemon.com/apps/",symbol:"◇",note:"Official Pokémon India app directory"},
-  {name:"Pokémon Smile",category:"Brushing companion",platform:"Android · iOS",url:"https://in.portal-pokemon.com/apps/",symbol:"☺",note:"Official Pokémon India app directory"},
+  {name:"Pokémon Smile",category:"Brushing companion",platform:"Android · iOS",url:"https://in.portal-pokemon.com/apps/",symbol:"SM",note:"Official Pokémon India app directory"},
   {name:"Pokémon: Magikarp Jump",category:"Casual training game",platform:"Android · iOS",url:"https://in.portal-pokemon.com/apps/",symbol:"≈",note:"Official Pokémon India app directory"}
 ]
 });

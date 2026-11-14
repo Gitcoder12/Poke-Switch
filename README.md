@@ -1,6 +1,6 @@
 # Poke-Switch
 
-An independent Pokémon discovery app for official games, fan projects, the Pokédex and mobile adventures.
+An independent Pokémon discovery app for game discovery, the National Pokédex, a nine-region map atlas, fan projects and mobile adventures.
 
 ## Open the website
 
@@ -24,7 +24,8 @@ Use the fixed left navigation to switch between independent screens:
 
 - **Discover** — featured Pokémon, daily field note and quick-launch cards.
 - **Game library** — curated main-series and spin-off catalogue.
-- **Pokédex** — search, type filters, artwork, statistics and species entries.
+- **Region atlas** — nine expandable region maps with landmark notes and source links.
+- **Pokédex** — search, type filters, an artwork gallery, shiny variants when available, sprites, statistics and species entries.
 - **Fan universe** — curated unofficial community projects.
 - **Mobile games** — official Pokémon mobile-app links.
 - **PC wishboard** — local requests and votes plus a message you can copy to Nintendo.
@@ -54,7 +55,8 @@ Poke-Switch/
 ## Data and artwork
 
 - Pokédex records, types, stats and descriptions come from [PokéAPI](https://pokeapi.co/docs/v2).
-- Pokémon illustrations use the available official-artwork files from the [PokéAPI sprites repository](https://github.com/PokeAPI/sprites). Images are displayed at their available source resolution, not artificially upscaled or claimed to be 4K.
+- Pokémon illustrations and sprite variants use the available files from the [PokéAPI sprites repository](https://github.com/PokeAPI/sprites). A gallery only shows variants returned by the API; images are not artificially upscaled or claimed to be 4K.
+- Region maps link to referenced Pokémon Center map products and source collections. Image availability and resolution depend on the original source.
 - Game and fan-project directories are curated selections, not exhaustive lists. Check publisher and creator links for current availability.
 - PC requests and votes stay in each visitor's browser. They are not sent to Nintendo and are not global vote totals.
 - Fan projects are unofficial. Poke-Switch does not host ROMs, game files or copyrighted downloads.
@@ -68,7 +70,7 @@ node --check assets/js/app.js
 node --test tests/site.test.cjs
 ```
 
-## Official links
+Poke-Switch is not an official Nintendo or Pokémon product. Official brand names appear as outbound resource links only; the Poke-Switch identity remains the primary brand.\n\n## Official links
 
 - [Pokémon](https://www.pokemon.com/)
 - [Pokémon games](https://in.portal-pokemon.com/game/)

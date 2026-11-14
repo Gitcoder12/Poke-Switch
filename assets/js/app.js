@@ -16,6 +16,9 @@ const { games, fanProjects, mobileApps } = window.PokeSwitchData || {
   fanProjects: [],
   mobileApps: []
 };
+const regions = Array.isArray(window.PokeSwitchRegions) ? window.PokeSwitchRegions : [];
+const APP_STORE_DEVELOPER_URL = "https://apps.apple.com/in/developer/the-pokemon-company/id446737235";
+const GOOGLE_PLAY_DEVELOPER_URL = "https://play.google.com/store/apps/developer?hl=en_IN&id=The+Pok%C3%A9mon+Company";
 
 const $ = (selector, root=document) => root.querySelector(selector);
 const $$ = (selector, root=document) => Array.from(root.querySelectorAll(selector));
@@ -50,6 +53,99 @@ let currentFanKind="all";
 let gameSearchTerm="";
 let selectedGameGeneration="all";
 
+function renderStoreBadges(game) {
+  const platform = String(game.platform || "");
+  const badges = [];
+  if (/Nintendo Switch|Switch 2/i.test(platform)) {
+    badges.push('<a class="store-badge store-eshop" href="'+NINTENDO_GAME_HUB+'" target="_blank" rel="noopener noreferrer" aria-label="Browse Pokémon titles in the Nintendo eShop"><span class="store-mark">N</span><span>Nintendo eShop</span></a>');
+  }
+  if (/Mobile|Android|iOS/i.test(platform)) {
+    badges.push('<a class="store-badge store-app-store" href="'+APP_STORE_DEVELOPER_URL+'" target="_blank" rel="noopener noreferrer" aria-label="Browse The Pokémon Company apps in the App Store"><span class="store-mark">A</span><span>App Store</span></a>');
+    badges.push('<a class="store-badge store-google-play" href="'+GOOGLE_PLAY_DEVELOPER_URL+'" target="_blank" rel="noopener noreferrer" aria-label="Browse The Pokémon Company apps on Google Play"><span class="store-mark">▶</span><span>Google Play</span></a>');
+  }
+  return badges.length ? '<div class="game-store-links" aria-label="Official platform directories">'+badges.join("")+'</div>' : "";
+}
+
+
+const GAME_ARTWORK_RULES = [
+  { pattern:/scarlet|violet/i, ids:[1007,1008], label:"Koraidon + Miraidon" },
+  { pattern:/legends\s*[:–-]?\s*z.?a|z.?a\b/i, ids:[718], label:"Zygarde" },
+  { pattern:/legends\s*[:–-]?\s*arceus|arceus|hisui/i, ids:[493], label:"Arceus" },
+  { pattern:/sword|shield|galar/i, ids:[888,889], label:"Zacian + Zamazenta" },
+  { pattern:/black|white|unova/i, ids:[643,644], label:"Reshiram + Zekrom" },
+  { pattern:/diamond|pearl|platinum|sinnoh/i, ids:[483,484], label:"Dialga + Palkia" },
+  { pattern:/ruby|sapphire|emerald|hoenn/i, ids:[383,382], label:"Groudon + Kyogre" },
+  { pattern:/gold|silver|crystal|johto/i, ids:[250,249], label:"Ho-Oh + Lugia" },
+  { pattern:/\bx\s*&\s*y\b|kalos/i, ids:[716,717], label:"Xerneas + Yveltal" },
+  { pattern:/sun|moon|alola/i, ids:[791,792], label:"Solgaleo + Lunala" },
+  { pattern:/red|blue|yellow|firered|leafgreen|let'?s go|kanto/i, ids:[150], label:"Mewtwo" },
+  { pattern:/classic|collection/i, ids:[25,6], label:"Classic favorites" },
+  { pattern:/pokopia/i, ids:[132], label:"Ditto" },
+  { pattern:/mystery dungeon/i, ids:[448], label:"Lucario" }
+];
+const REGION_ARTWORK = {
+  kanto:{ids:[150],label:"Mewtwo · Kanto"},
+  johto:{ids:[250,249],label:"Ho-Oh + Lugia · Johto"},
+  hoenn:{ids:[384],label:"Rayquaza · Hoenn"},
+  sinnoh:{ids:[483,484],label:"Dialga + Palkia · Sinnoh"},
+  unova:{ids:[643,644],label:"Reshiram + Zekrom · Unova"},
+  kalos:{ids:[716,717],label:"Xerneas + Yveltal · Kalos"},
+  alola:{ids:[791,792],label:"Solgaleo + Lunala · Alola"},
+  galar:{ids:[888,889],label:"Zacian + Zamazenta · Galar"},
+  paldea:{ids:[1007,1008],label:"Koraidon + Miraidon · Paldea"},
+  hisui:{ids:[493],label:"Arceus · Hisui"}
+};
+
+function resolveGameArtwork(title, region) {
+  const normalizedTitle=String(title||"");
+  const matched=GAME_ARTWORK_RULES.find(rule=>rule.pattern.test(normalizedTitle));
+  if(matched) return {ids:matched.ids,label:matched.label,source:"game"};
+  const regionKey=String(region||"").toLowerCase();
+  if(REGION_ARTWORK[regionKey]) return {...REGION_ARTWORK[regionKey],source:"region"};
+  return {ids:[25],label:"Pokémon mascot artwork",source:"mascot"};
+}
+function pokemonArtworkURL(id) {
+  return "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/"+id+".png";
+}
+function pokemonSpriteURL(id) {
+  return "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"+id+".png";
+}
+function renderPokemonArtwork(ids, label, imageClass) {
+  return ids.slice(0,2).map((id,index)=>
+    '<img class="'+imageClass+'" src="'+pokemonArtworkURL(id)+'" data-pokemon-art data-fallback="'+pokemonSpriteURL(id)+'" alt="'+escapeHTML(label)+' artwork '+(index+1)+'" loading="lazy" decoding="async">'
+  ).join("");
+}
+function bindPokemonArtworkFallbacks(root) {
+  if(!root) return;
+  root.querySelectorAll("[data-pokemon-art]").forEach(image=>{
+    image.addEventListener("error",()=>{
+      if(image.dataset.fallback && image.dataset.fallbackUsed!=="true") {
+        image.dataset.fallbackUsed="true";
+        image.src=image.dataset.fallback;
+        return;
+      }
+      const frame=image.closest("[data-artwork-frame]");
+      if(frame) frame.classList.add("artwork-unavailable");
+      image.remove();
+    });
+  });
+}
+function renderGameArtwork(game) {
+  const artwork=resolveGameArtwork(game.title,game.region);
+  return '<div class="game-card-art" data-artwork-frame aria-label="Featured Pokémon artwork">'+
+    '<div class="game-art-stack">'+renderPokemonArtwork(artwork.ids,artwork.label,"game-art-image")+'</div>'+
+    '<span class="game-art-label">'+escapeHTML(artwork.label)+'</span>'+
+    '<span class="game-art-source">POKÉAPI SPRITE ARCHIVE</span>'+
+  '</div>';
+}
+function renderWishArtwork(request) {
+  const artwork=resolveGameArtwork(request.title,"");
+  return '<div class="wish-artwork" data-artwork-frame aria-label="Representative Pokémon artwork">'+
+    '<div class="wish-art-stack">'+renderPokemonArtwork(artwork.ids,artwork.label,"wish-art-image")+'</div>'+
+    '<span class="wish-art-caption">'+escapeHTML(artwork.label)+'</span>'+
+  '</div>';
+}
+
 function renderGames() {
   const query=gameSearchTerm.trim().toLowerCase();
   const items=games.filter(game=>{
@@ -72,11 +168,16 @@ function renderGames() {
     const era=game.kind==="upcoming" ? "UPCOMING" : game.kind==="spin-off" ? "SPIN-OFF" : "GEN "+game.gen;
     const status=game.kind==="upcoming" ? "Announced" : "Official series";
     return '<article class="game-card">'+
-      '<div class="game-card-top"><span class="game-chip">'+era+'</span><span class="status-chip">'+status+'</span></div>'+
-      '<div><h3>'+escapeHTML(game.title)+'</h3><p class="game-meta">'+escapeHTML(game.region)+' · '+escapeHTML(game.platform)+'</p></div>'+
-      '<div class="game-card-bottom"><span>'+escapeHTML(game.summary)+'</span>'+externalLink(POKEMON_GAME_HUB,"Official details")+'</div>'+
+      renderGameArtwork(game)+
+      '<div class="game-card-inner">'+
+        '<div class="game-card-top"><span class="game-chip">'+era+'</span><span class="status-chip">'+status+'</span></div>'+
+        '<div class="game-card-heading"><h3>'+escapeHTML(game.title)+'</h3>'+renderStoreBadges(game)+'</div>'+
+        '<p class="game-meta">'+escapeHTML(game.region)+' · '+escapeHTML(game.platform)+'</p>'+
+        '<div class="game-card-bottom"><span>'+escapeHTML(game.summary)+'</span>'+externalLink(POKEMON_GAME_HUB,"Official details")+'</div>'+
+      '</div>'+
     '</article>';
   }).join("");
+  bindPokemonArtworkFallbacks(grid);
 }
 
 function initGames() {
@@ -101,7 +202,7 @@ function renderFanGames() {
   const entries=fanProjects.filter(project=>currentFanKind==="all" || project.kind===currentFanKind);
   $("#fan-grid").innerHTML=entries.map(project=>
     '<article class="fan-card">'+
-      '<div class="fan-card-head"><span class="fan-type">'+escapeHTML(project.type)+'</span><span class="fan-symbol">✳</span></div>'+
+      '<div class="fan-card-head"><span class="fan-type">'+escapeHTML(project.type)+'</span><span class="fan-symbol">F</span></div>'+
       '<h3>'+escapeHTML(project.name)+'</h3>'+
       '<p>'+escapeHTML(project.desc)+'</p>'+
       '<div class="fan-card-foot"><span class="platform-label">'+escapeHTML(project.platform)+'</span>'+externalLink(project.url,project.label)+'</div>'+
@@ -286,20 +387,57 @@ async function openPokemon(id) {
     const entry=(species.flavor_text_entries||[]).find(item=>item.language.name==="en" && item.version.name==="scarlet") ||
       (species.flavor_text_entries||[]).find(item=>item.language.name==="en") || null;
     const flavor=entry?entry.flavor_text.replace(/[\f\n\r]/g," "):"No English Pokédex entry is available for this Pokémon.";
+    const artwork=pokemon.sprites.other && pokemon.sprites.other["official-artwork"];
+    const home=pokemon.sprites.other && pokemon.sprites.other.home;
+    const gallery=[
+      {label:"Official artwork",kind:"OFFICIAL ART",src:artwork && artwork.front_default},
+      {label:"Shiny artwork",kind:"SHINY ART",src:artwork && artwork.front_shiny},
+      {label:"HOME render",kind:"HOME RENDER",src:home && home.front_default},
+      {label:"Shiny HOME render",kind:"SHINY HOME",src:home && home.front_shiny},
+      {label:"Classic sprite",kind:"SPRITE",src:pokemon.sprites.front_default},
+      {label:"Shiny sprite",kind:"SHINY SPRITE",src:pokemon.sprites.front_shiny}
+    ].filter((item,index,list)=>item.src && list.findIndex(other=>other.src===item.src)===index);
+    if(!gallery.length) gallery.push({label:"Official artwork",kind:"OFFICIAL ART",src:spriteUrl(id)});
     const stats=pokemon.stats.map(stat=>{
       const name=stat.stat.name.replace("special-","sp. ");
       const value=stat.base_stat;
       return '<div class="stat-row"><span>'+escapeHTML(name)+'</span><span class="stat-track"><span class="stat-fill" style="display:block;width:'+Math.min(100,value/2)+'%"></span></span><b>'+value+'</b></div>';
     }).join("");
+    const thumbnails=gallery.map((image,index)=>
+      '<button class="gallery-thumb '+(index===0?"active":"")+'" type="button" data-gallery-index="'+index+'" aria-label="Show '+escapeHTML(image.label)+'" aria-pressed="'+(index===0)+'">'+
+        '<img src="'+escapeHTML(image.src)+'" alt="" loading="lazy" decoding="async"><span>'+escapeHTML(image.label)+'</span></button>'
+    ).join("");
     content.innerHTML=
-      '<div class="pokemon-detail-hero">'+
-        '<div class="pokemon-detail-art"><img src="'+spriteUrl(id)+'" alt="'+escapeHTML(pokemon.name)+'" onerror="this.onerror=null;this.src=\'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'+id+'.png\'"></div>'+
-        '<div><span class="pokemon-detail-number">'+shortDexNumber(id)+'</span><h2 id="pokemon-dialog-title">'+escapeHTML(pokemon.name.replace(/-/g," "))+'</h2><div class="dialog-types">'+typePills(pokemon.types)+'</div>'+
-        '<div class="pokemon-detail-meta"><span>Height <b>'+(pokemon.height/10).toFixed(1)+' m</b></span><span>Weight <b>'+(pokemon.weight/10).toFixed(1)+' kg</b></span></div></div>'+
-      '</div>'+
-      '<p class="pokemon-detail-flavor">'+escapeHTML(flavor)+'</p>'+
-      '<div class="stats-list">'+stats+'</div>'+
-      '<p class="source-note">Pokédex entry and base stats from PokéAPI. Game-version descriptions can differ.</p>';
+      '<div class="pokemon-lightbox-layout">'+
+        '<section class="pokemon-gallery-panel" aria-label="Pokémon artwork gallery">'+
+          '<div class="pokemon-gallery-heading"><span class="gallery-kicker">SPECIMEN VISUAL ARCHIVE</span><span class="gallery-kind" id="gallery-kind">'+escapeHTML(gallery[0].kind)+'</span></div>'+
+          '<div class="pokemon-gallery-stage"><div class="gallery-stage-disc"></div><img id="pokemon-gallery-main" src="'+escapeHTML(gallery[0].src)+'" alt="Official artwork of '+escapeHTML(pokemon.name.replace(/-/g," "))+'" decoding="async"></div>'+
+          '<div class="pokemon-gallery-thumbs" role="group" aria-label="Available artwork and sprite views">'+thumbnails+'</div>'+
+          '<p class="gallery-source-note">Available artwork and sprites served by the PokéAPI sprite collection. Some Pokémon have fewer image variants.</p>'+
+        '</section>'+
+        '<aside class="pokemon-detail-panel">'+
+          '<div class="pokemon-detail-overline">NATIONAL POKÉDEX <span>'+shortDexNumber(id)+'</span></div>'+
+          '<h2 id="pokemon-dialog-title">'+escapeHTML(pokemon.name.replace(/-/g," "))+'</h2>'+
+          '<div class="dialog-types">'+typePills(pokemon.types)+'</div>'+
+          '<div class="pokemon-detail-meta"><span>Height <b>'+(pokemon.height/10).toFixed(1)+' m</b></span><span>Weight <b>'+(pokemon.weight/10).toFixed(1)+' kg</b></span></div>'+
+          '<p class="pokemon-detail-flavor">'+escapeHTML(flavor)+'</p>'+
+          '<h3 class="stats-heading">BASE STAT PROFILE</h3><div class="stats-list">'+stats+'</div>'+
+          '<p class="source-note">Species entry and base stats from PokéAPI. Descriptions can vary by game version.</p>'+
+        '</aside>'+
+      '</div>';
+    content.querySelectorAll("[data-gallery-index]").forEach(button=>button.addEventListener("click",()=>{
+      const selected=gallery[Number(button.dataset.galleryIndex)];
+      if(!selected) return;
+      const main=$("#pokemon-gallery-main",content);
+      main.src=selected.src;
+      main.alt=selected.label+" of "+pokemon.name.replace(/-/g," ");
+      $("#gallery-kind",content).textContent=selected.kind;
+      content.querySelectorAll("[data-gallery-index]").forEach(item=>{
+        const active=item===button;
+        item.classList.toggle("active",active);
+        item.setAttribute("aria-pressed",String(active));
+      });
+    }));
   } catch(error) {
     content.innerHTML='<div class="empty-state">Could not load this Pokémon right now. '+escapeHTML(error.message)+'</div>';
   }
@@ -353,15 +491,23 @@ function saveRequests() {
 }
 function renderRequests() {
   const list=$("#request-list");
-  const sorted=requests.slice().sort((a,b)=>b.votes-a.votes || a.title.localeCompare(b.title));
+  const sorted=requests.slice().sort((a,b)=>(Number(b.votes)||0)-(Number(a.votes)||0) || String(a.title||"").localeCompare(String(b.title||"")));
   if (!sorted.length) {
     list.innerHTML='<div class="empty-state">No requests yet. Add the first PC release wish.</div>';
     return;
   }
   list.innerHTML=sorted.map(request=>{
     const voted=votedRequests.has(request.id);
-    return '<div class="request-item"><button class="vote-button '+(voted?"voted":"")+'" type="button" data-vote="'+escapeHTML(request.id)+'" aria-label="'+(voted?"Remove your vote":"Vote for")+' '+escapeHTML(request.title)+'" aria-pressed="'+voted+'">'+(voted?"✓":"↑")+'</button><span class="request-title">'+escapeHTML(request.title)+'</span><span class="request-votes">'+request.votes+' local vote'+(request.votes===1?"":"s")+'</span></div>';
+    const votes=Math.max(0,Number(request.votes)||0);
+    return '<article class="request-item">'+
+      renderWishArtwork(request)+
+      '<div class="wish-copy"><span class="wish-copy-kicker">PC RELEASE WISH</span>'+
+      '<span class="request-title">'+escapeHTML(request.title)+'</span>'+
+      '<span class="request-votes">'+votes+' local vote'+(votes===1?"":"s")+'</span></div>'+
+      '<button class="vote-button '+(voted?"voted":"")+'" type="button" data-vote="'+escapeHTML(request.id)+'" aria-label="'+(voted?"Remove your vote":"Vote for")+' '+escapeHTML(request.title)+'" aria-pressed="'+voted+'">'+(voted?"✓":"↑")+'</button>'+
+    '</article>';
   }).join("");
+  bindPokemonArtworkFallbacks(list);
   list.querySelectorAll("[data-vote]").forEach(button=>button.addEventListener("click",()=>toggleVote(button.dataset.vote)));
 }
 function toggleVote(id) {
@@ -369,10 +515,10 @@ function toggleVote(id) {
   if (!request) return;
   if (votedRequests.has(id)) {
     votedRequests.delete(id);
-    request.votes=Math.max(0,request.votes-1);
+    request.votes=Math.max(0,(Number(request.votes)||0)-1);
   } else {
     votedRequests.add(id);
-    request.votes+=1;
+    request.votes=(Number(request.votes)||0)+1;
   }
   saveRequests();
   renderRequests();
@@ -383,7 +529,7 @@ function initRequests() {
     event.preventDefault();
     const input=$("#request-title");
     const title=input.value.trim();
-    if (title.length<3) {showToast("Enter a game title first.");return;}
+    if (title.length<3 || title.length>90 || /[\u0000-\u001f\u007f]/.test(title)) {showToast("Use a game title between 3 and 90 characters.");return;}
     const existing=requests.find(item=>item.title.toLowerCase()===title.toLowerCase());
     if (existing) {showToast("That request is already on your wishboard.");input.value="";return;}
     requests.push({id:"wish-"+Date.now().toString(36),title,votes:0});
@@ -414,6 +560,7 @@ function initRequests() {
 const VIEW_META = {
   discover:{title:"Discover",kicker:"FIELD GUIDE"},
   games:{title:"Game library",kicker:"OFFICIAL GAME ARCHIVE"},
+  regions:{title:"Region atlas",kicker:"NINE REGION MAPS"},
   pokedex:{title:"Pokédex",kicker:"NATIONAL DEX"},
   "fan-games":{title:"Fan universe",kicker:"COMMUNITY PROJECTS"},
   mobile:{title:"Mobile games",kicker:"POKÉMON ON THE GO"},
@@ -422,12 +569,12 @@ const VIEW_META = {
 
 function showView(name, updateHistory=false) {
   const viewName=Object.prototype.hasOwnProperty.call(VIEW_META,name)?name:"discover";
-  $(".app-view").forEach(view=>{
+  $$(".app-view").forEach(view=>{
     const active=view.dataset.view===viewName;
     view.hidden=!active;
     view.classList.toggle("is-active",active);
   });
-  $(".side-link[data-view-target]").forEach(link=>{
+  $$(".side-link[data-view-target]").forEach(link=>{
     const active=link.dataset.viewTarget===viewName;
     link.classList.toggle("active",active);
     if(active) link.setAttribute("aria-current","page");
@@ -443,6 +590,67 @@ function showView(name, updateHistory=false) {
   const main=$("#app-main");
   if(main) main.scrollTop=0;
   if(updateHistory) history.pushState({view:viewName},"","#"+viewName);
+}
+
+function renderRegions() {
+  const grid=$("#region-grid");
+  if(!grid) return;
+  if(!regions.length) {
+    grid.innerHTML='<div class="empty-state">The region atlas data is unavailable.</div>';
+    return;
+  }
+  grid.innerHTML=regions.map((region,index)=>
+    '<button class="region-card" type="button" data-region-id="'+escapeHTML(region.id)+'" aria-label="Open the '+escapeHTML(region.name)+' region map">'+
+      '<span class="region-card-number">0'+(index+1)+'</span>'+
+      '<span class="region-card-generation">GEN '+escapeHTML(region.generation)+'</span>'+
+      '<span class="region-card-art"><img src="'+escapeHTML(region.image)+'" alt="'+escapeHTML(region.imageAlt)+'" loading="lazy" decoding="async"></span>'+
+      '<span class="region-card-copy"><b>'+escapeHTML(region.name)+'</b><small>'+escapeHTML(region.games)+'</small><span class="region-card-open">EXPLORE MAP <i>↗</i></span></span>'+
+    '</button>'
+  ).join("");
+  grid.querySelectorAll("[data-region-id]").forEach(button=>button.addEventListener("click",()=>openRegion(button.dataset.regionId)));
+  grid.querySelectorAll("img").forEach(image=>image.addEventListener("error",()=>{
+    image.closest(".region-card-art").classList.add("map-unavailable");
+    image.remove();
+  },{once:true}));
+}
+
+function openRegion(id) {
+  const region=regions.find(item=>item.id===id);
+  if(!region) return;
+  const dialog=$("#region-dialog");
+  const content=$("#region-dialog-content");
+  const landmarks=region.landmarks.map(item=>'<span class="landmark-chip">'+escapeHTML(item)+'</span>').join("");
+  content.innerHTML=
+    '<div class="region-dialog-layout">'+
+      '<section class="region-dialog-map">'+
+        '<div class="region-dialog-map-top"><span>REGION MAP / GEN '+escapeHTML(region.generation)+'</span><a href="'+escapeHTML(region.source)+'" target="_blank" rel="noopener noreferrer">OPEN SOURCE ↗</a></div>'+
+        '<div class="region-map-frame"><img src="'+escapeHTML(region.image)+'" alt="'+escapeHTML(region.imageAlt)+'" decoding="async"></div>'+
+        '<p class="region-map-caption">'+escapeHTML(region.sourceLabel)+'</p>'+
+      '</section>'+
+      '<aside class="region-dialog-copy">'+
+        '<span class="section-overline">REGION ATLAS / GENERATION '+escapeHTML(region.generation)+'</span>'+
+        '<h2 id="region-dialog-title">'+escapeHTML(region.name)+'</h2>'+
+        '<p>'+escapeHTML(region.description)+'</p>'+
+        '<div class="region-dialog-section"><b>LANDMARKS TO FIND</b><div class="landmark-list">'+landmarks+'</div></div>'+
+        '<div class="region-dialog-section"><b>FEATURED GAMES</b><p>'+escapeHTML(region.games)+'</p></div>'+
+        '<a class="region-source-link" href="'+escapeHTML(region.source)+'" target="_blank" rel="noopener noreferrer">View map source <span>↗</span></a>'+
+        '<p class="region-rights-note">Map artwork is owned by its respective rights holders. Source links identify the referenced map or product collection.</p>'+
+      '</aside>'+
+    '</div>';
+  const image=$(".region-map-frame img",content);
+  image.addEventListener("error",()=>{
+    image.closest(".region-map-frame").classList.add("map-unavailable");
+    image.remove();
+  },{once:true});
+  dialog.showModal();
+}
+
+function initRegionDialog() {
+  const dialog=$("#region-dialog");
+  $("#region-dialog-close").addEventListener("click",()=>dialog.close());
+  dialog.addEventListener("click",event=>{
+    if(event.target===dialog) dialog.close();
+  });
 }
 
 function closeMobileNavigation() {
@@ -492,6 +700,8 @@ function initNavigation() {
 
 function initApp() {
   initGames();
+  renderRegions();
+  initRegionDialog();
   initFanGames();
   renderMobileApps();
   initThemes();
