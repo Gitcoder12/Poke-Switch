@@ -10,6 +10,7 @@ const html = fs.readFileSync(path.join(root, "index.html"), "utf8");
 const app = fs.readFileSync(path.join(root, "assets", "js", "app.js"), "utf8");
 const css = fs.readFileSync(path.join(root, "assets", "css", "styles.css"), "utf8");
 const catalogue = fs.readFileSync(path.join(root, "data", "catalogue.js"), "utf8");
+const regionData = fs.readFileSync(path.join(root, "data", "regions.js"), "utf8");
 
 test("the Windows launcher starts the documented local server", () => {
   const launcher = fs.readFileSync(path.join(root, "run-local.bat"), "utf8");
@@ -116,8 +117,8 @@ test("README explains the Windows launcher and manual local URL without AI notes
 });
 
 
-test("the app has six independent route views and a persistent navigation shell", () => {
-  const routes = ["discover", "games", "pokedex", "fan-games", "mobile", "requests"];
+test("the app has seven independent route views and a persistent navigation shell", () => {
+  const routes = ["discover", "games", "regions", "pokedex", "fan-games", "mobile", "requests"];
   for (const route of routes) {
     assert.ok(html.includes('data-view="' + route + '"'), "Missing view: " + route);
     assert.ok(html.includes('data-view-target="' + route + '"'), "Missing navigation item: " + route);
@@ -141,4 +142,40 @@ test("navigation changes views rather than scrolling to page anchors", () => {
   assert.ok(app.includes("history.pushState"));
   assert.ok(app.includes('closest("[data-view-target]")'));
   assert.ok(css.includes(".app-view{height:100%;min-height:0;overflow-y:auto"));
+});
+
+test("the region atlas has nine sourced maps and opens a dedicated detail dialog", () => {
+  const ids = [...regionData.matchAll(/id:"([a-z]+)",name:/g)].map(match => match[1]);
+  assert.deepEqual(ids, ["kanto","johto","hoenn","sinnoh","unova","kalos","alola","galar","paldea"]);
+  assert.equal((regionData.match(/image:"https:\/\//g) || []).length, 9);
+  assert.equal((regionData.match(/source:"https:\/\//g) || []).length, 9);
+  assert.match(html, /id="region-grid"/);
+  assert.match(html, /id="region-dialog"/);
+  assert.match(app, /function renderRegions\(/);
+  assert.match(app, /function openRegion\(/);
+  assert.match(app, /function initRegionDialog\(/);
+});
+
+test("Pokémon detail viewer exposes available official, shiny and sprite variants", () => {
+  assert.match(app, /pokemon\.sprites\.other/);
+  assert.match(app, /official-artwork/);
+  assert.match(app, /front_shiny/);
+  assert.match(app, /front_default/);
+  assert.match(app, /data-gallery-index/);
+  assert.match(html, /id="pokemon-dialog-content"/);
+});
+
+test("game cards show only the platform directories supported by catalogue metadata", () => {
+  assert.match(app, /function renderStoreBadges\(game\)/);
+  assert.match(app, /APP_STORE_DEVELOPER_URL/);
+  assert.match(app, /GOOGLE_PLAY_DEVELOPER_URL/);
+  assert.match(app, /NINTENDO_GAME_HUB/);
+  assert.match(app, /Nintendo Switch\|Switch 2/);
+  assert.match(app, /Mobile\|Android\|iOS/);
+});
+
+test("the interface does not include decorative emoji glyphs", () => {
+  for (const [label, source] of [["HTML", html], ["application", app], ["catalogue", catalogue]]) {
+    assert.doesNotMatch(source, /[⚡✳✉⚔☕☺]/u, label + " should use type and CSS accents instead");
+  }
 });
