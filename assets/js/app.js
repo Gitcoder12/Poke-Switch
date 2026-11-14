@@ -117,7 +117,7 @@ function renderFanGames() {
   const entries=fanProjects.filter(project=>currentFanKind==="all" || project.kind===currentFanKind);
   $("#fan-grid").innerHTML=entries.map(project=>
     '<article class="fan-card">'+
-      '<div class="fan-card-head"><span class="fan-type">'+escapeHTML(project.type)+'</span><span class="fan-symbol">✳</span></div>'+
+      '<div class="fan-card-head"><span class="fan-type">'+escapeHTML(project.type)+'</span><span class="fan-symbol">F</span></div>'+
       '<h3>'+escapeHTML(project.name)+'</h3>'+
       '<p>'+escapeHTML(project.desc)+'</p>'+
       '<div class="fan-card-foot"><span class="platform-label">'+escapeHTML(project.platform)+'</span>'+externalLink(project.url,project.label)+'</div>'+
