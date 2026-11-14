@@ -137,9 +137,3 @@ test("navigation changes views rather than scrolling to page anchors", () => {
   assert.ok(app.includes('closest("[data-view-target]")'));
   assert.ok(css.includes(".app-view{height:100%;min-height:0;overflow-y:auto"));
 });
-test("navigation changes views rather than scrolling to page anchors", () => {
-  assert.match(app, /function showView\\(/);
-  assert.match(app, /history\\.pushState/);
-  assert.match(app, /data-view-target/);
-  assert.match(css, /\\.app-view\\{height:100%;[^}]*overflow-y:auto/s);
-});
