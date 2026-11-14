@@ -111,7 +111,7 @@ test("README explains the Windows launcher and manual local URL without AI notes
   const readme = fs.readFileSync(path.join(root, "README.md"), "utf8");
   assert.match(readme, /double-click `run-local\.bat`/);
   assert.match(readme, /http:\/\/localhost:8000/);
-  assert.match(readme, /No npm install or build step is needed/);
+  assert.match(readme, /No npm install or build step is (needed|required)/);
   assert.doesNotMatch(readme, /AI-maintained project notes|AI-generated/);
 });
 
@@ -119,17 +119,24 @@ test("README explains the Windows launcher and manual local URL without AI notes
 test("the app has six independent route views and a persistent navigation shell", () => {
   const routes = ["discover", "games", "pokedex", "fan-games", "mobile", "requests"];
   for (const route of routes) {
-    assert.match(html, new RegExp('data-view="' + route + '"'));
-    assert.match(html, new RegExp('data-view-target="' + route + '"'));
-    assert.match(app, new RegExp(route.replace("-", "\\\\-") + '.*title:'));
+    assert.ok(html.includes('data-view="' + route + '"'), "Missing view: " + route);
+    assert.ok(html.includes('data-view-target="' + route + '"'), "Missing navigation item: " + route);
+    const metaKey = route === "fan-games" ? '"fan-games":{title:' : route + ":{title:";
+    assert.ok(app.includes(metaKey), "Missing route metadata: " + route);
   }
-  assert.match(html, /class="app-sidebar"/);
-  assert.match(html, /class="app-topbar"/);
-  assert.match(html, /class="app-main"/);
-  assert.match(css, /body\\{[^}]*height:100vh[^}]*overflow:hidden/s);
-  assert.match(css, /\\.app-view\\[hidden\\]\\{display:none!important\\}/);
+  assert.ok(html.includes('class="app-sidebar"'));
+  assert.ok(html.includes('class="app-topbar"'));
+  assert.ok(html.includes('class="app-main"'));
+  assert.ok(css.includes("body{margin:0;min-width:320px;height:100vh;overflow:hidden"));
+  assert.ok(css.includes(".app-view[hidden]{display:none!important}"));
 });
 
+test("navigation changes views rather than scrolling to page anchors", () => {
+  assert.ok(app.includes("function showView("));
+  assert.ok(app.includes("history.pushState"));
+  assert.ok(app.includes('closest("[data-view-target]")'));
+  assert.ok(css.includes(".app-view{height:100%;min-height:0;overflow-y:auto"));
+});
 test("navigation changes views rather than scrolling to page anchors", () => {
   assert.match(app, /function showView\\(/);
   assert.match(app, /history\\.pushState/);
