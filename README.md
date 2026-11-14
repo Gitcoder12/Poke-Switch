@@ -1,12 +1,12 @@
 # Poke-Switch
 
-A Pokémon discovery hub for games, fan projects, the Pokédex and mobile adventures.
+An independent Pokémon discovery app for official games, fan projects, the Pokédex and mobile adventures.
 
 ## Open the website
 
-**Windows:** double-click `run-local.bat` in this folder. It starts the local website and opens your browser.
+**Windows:** double-click `run-local.bat` in the project folder. It starts the local website and opens your browser.
 
-Keep the black server window open while you use the site. Close that window or press `Ctrl + C` to stop it.
+Keep the server window open while using the app. Press `Ctrl + C` in that window to stop it.
 
 **Manual start:** open a terminal in this folder and run:
 
@@ -14,21 +14,22 @@ Keep the black server window open while you use the site. Close that window or p
 python -m http.server 8000
 ```
 
-Then visit:
+Then visit **http://localhost:8000**.
 
-**http://localhost:8000**
+You need Python 3 and an internet connection for live Pokédex data. No npm install or build step is required.
 
-You need Python 3 and an internet connection for live Pokédex data. No npm install or build step is needed.
+## Navigate the app
 
-## What is included
+Use the fixed left navigation to switch between independent screens:
 
-- Pokémon game catalogue with search, generation filters and grid/list layouts.
-- Ten region-inspired colour themes.
-- Curated unofficial fan-game directory with links to project pages.
-- Searchable Pokédex with Pokémon artwork, types, stats and Pokédex entries.
-- Daily Pokémon entry and random Pokémon discovery.
-- Official Pokémon mobile-game links.
-- PC-release wishboard with local add and vote controls and a message you can copy to Nintendo.
+- **Discover** — featured Pokémon, daily field note and quick-launch cards.
+- **Game library** — curated main-series and spin-off catalogue.
+- **Pokédex** — search, type filters, artwork, statistics and species entries.
+- **Fan universe** — curated unofficial community projects.
+- **Mobile games** — official Pokémon mobile-app links.
+- **PC wishboard** — local requests and votes plus a message you can copy to Nintendo.
+
+The app changes screens without sending you down one long landing page. On smaller screens, use the menu button in the top bar.
 
 ## Project structure
 
@@ -53,9 +54,9 @@ Poke-Switch/
 ## Data and artwork
 
 - Pokédex records, types, stats and descriptions come from [PokéAPI](https://pokeapi.co/docs/v2).
-- Pokémon illustrations use the official-artwork files available in the [PokéAPI sprites repository](https://github.com/PokeAPI/sprites). Artwork is shown at its available source resolution; images are not artificially upscaled and are not guaranteed to be 4K.
-- The game and fan-project directories are curated selections, not exhaustive lists. Check the linked publishers or project creators for current availability.
-- PC requests and votes stay in the visitor's browser. They are not sent to Nintendo and are not global vote totals.
+- Pokémon illustrations use the available official-artwork files from the [PokéAPI sprites repository](https://github.com/PokeAPI/sprites). Images are displayed at their available source resolution, not artificially upscaled or claimed to be 4K.
+- Game and fan-project directories are curated selections, not exhaustive lists. Check publisher and creator links for current availability.
+- PC requests and votes stay in each visitor's browser. They are not sent to Nintendo and are not global vote totals.
 - Fan projects are unofficial. Poke-Switch does not host ROMs, game files or copyrighted downloads.
 
 ## Development checks
@@ -76,4 +77,4 @@ node --test tests/site.test.cjs
 
 ## Disclaimer
 
-Poke-Switch is an independent fan project. It is not affiliated with, endorsed by or sponsored by Nintendo, GAME FREAK, Creatures Inc. or The Pokémon Company. Pokémon names, characters and artwork belong to their respective rights holders.
+Poke-Switch is an independent fan project and is not affiliated with, endorsed by or sponsored by Nintendo, GAME FREAK, Creatures Inc. or The Pokémon Company. Pokémon names, characters and artwork belong to their respective rights holders.
