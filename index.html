@@ -1,159 +1,234 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#18211b">
-    <meta name="description" content="A fan-made catalog for finding official ways to play Pokémon games and keeping a personal waitlist.">
-    <title>Poke-Switch | Game Library</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
-    <script src="app.js" defer></script>
-  </head>
-  <body>
-    <header class="topbar">
-      <a class="brand" href="#top" aria-label="Poke-Switch home">
-        <span class="brand-mark" aria-hidden="true"><i></i></span>
-        <span>POKE<span class="brand-dash">/</span>SWITCH</span>
-      </a>
-      <div class="topbar-note"><span class="status-dot"></span> FAN-MADE GAME CATALOG</div>
-      <a class="topbar-link" href="https://www.pokemon.com/us/pokemon-video-games" target="_blank" rel="noreferrer">Official game info <span aria-hidden="true">↗</span></a>
-    </header>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#121923">
+  <meta name="description" content="Poke-Switch is an independent Pokémon game discovery hub, community PC wishboard and Pokédex.">
+  <title>Poke-Switch — Your Pokémon Universe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body data-theme="league">
+  <div class="ambient ambient-one" aria-hidden="true"></div>
+  <div class="ambient ambient-two" aria-hidden="true"></div>
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="Poke-Switch home">
+      <span class="brand-ball" aria-hidden="true"><i></i></span>
+      <span class="brand-word">POKE<span>/</span>SWITCH</span>
+    </a>
+    <nav class="main-nav" aria-label="Main navigation">
+      <a href="#games">Games</a>
+      <a href="#fan-games">Fan games</a>
+      <a href="#pokedex">Pokédex</a>
+      <a href="#mobile">Mobile</a>
+      <a href="#requests">PC requests</a>
+    </nav>
+    <div class="header-actions">
+      <button class="icon-button" id="theme-open" type="button" aria-label="Choose region theme" title="Choose theme">◐</button>
+      <a class="header-cta" href="#pokedex">Explore Pokédex <span>↗</span></a>
+      <button class="menu-toggle" id="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false">☰</button>
+    </div>
+  </header>
 
-    <main id="top" class="app-shell">
-      <section class="intro" aria-labelledby="page-title">
-        <div>
-          <p class="eyebrow">ONE PLACE FOR YOUR NEXT ADVENTURE</p>
-          <h1 id="page-title">Your game shelf<span class="title-period">.</span></h1>
-          <p class="intro-copy">Browse the series, check official play options, and keep track of the titles you’re waiting for.</p>
+  <main id="top">
+    <section class="hero section-wrap">
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="eyebrow-dot"></span> YOUR FAN-MADE POKÉMON HUB</div>
+        <h1>One world.<br><em>Every adventure.</em></h1>
+        <p class="hero-lede">Find the games, meet the Pokémon, discover fan projects, and make your next wish heard.</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#games">Explore the game library <span>→</span></a>
+          <a class="button button-ghost" href="#pokedex">Open the Pokédex <span>✳</span></a>
         </div>
-        <div class="intro-mark" aria-hidden="true"><span>POKÉMON</span><b>GAME<br>INDEX</b><i>NO. 001—∞</i></div>
-      </section>
-
-      <section class="matcher" id="pc-matcher" aria-labelledby="matcher-title">
-        <div class="matcher-panel">
-          <div class="matcher-heading">
-            <div>
-              <p class="eyebrow">PC MATCHER / FAN PROJECTS</p>
-              <h2 id="matcher-title">Can your PC run it?</h2>
-              <p>Compare your hardware with a fan game's published minimum specs. Nothing is auto-detected or downloaded.</p>
-            </div>
-            <span class="matcher-chip">LOCAL CHECK</span>
-          </div>
-          <div class="matcher-fields">
-            <fieldset class="matcher-group">
-              <legend>GAME REQUIREMENTS</legend>
-              <label class="field-label" for="matcher-game">FAN GAME</label>
-              <select id="matcher-game" class="matcher-input"></select>
-              <p class="matcher-hint" id="matcher-game-note">Use the game's developer page to confirm minimum specs.</p>
-              <div class="spec-grid">
-                <label><span>MIN OS</span><select id="requirement-os" class="matcher-input"><option value="">Not listed</option><option value="any">Any desktop OS</option><option value="windows">Windows</option><option value="macos">macOS</option><option value="linux">Linux</option></select></label>
-                <label><span>RAM / GB</span><input id="requirement-ram" class="matcher-input" type="number" min="1" max="512" step="1" inputmode="numeric" placeholder="Not listed"></label>
-                <label><span>CPU CORES</span><input id="requirement-cores" class="matcher-input" type="number" min="1" max="256" step="1" inputmode="numeric" placeholder="Not listed"></label>
-                <label><span>GPU VRAM / GB</span><input id="requirement-vram" class="matcher-input" type="number" min="0" max="128" step="0.5" inputmode="decimal" placeholder="Not listed"></label>
-              </div>
-            </fieldset>
-            <fieldset class="matcher-group">
-              <legend>YOUR PC</legend>
-              <label class="field-label" for="profile-os">OPERATING SYSTEM</label>
-              <select id="profile-os" class="matcher-input"><option value="windows">Windows</option><option value="macos">macOS</option><option value="linux">Linux</option></select>
-              <p class="matcher-hint">Enter your specs manually. Values stay in this browser.</p>
-              <div class="spec-grid">
-                <label><span>RAM / GB</span><input id="profile-ram" class="matcher-input" type="number" min="1" max="512" step="1" inputmode="numeric" placeholder="e.g. 16"></label>
-                <label><span>CPU CORES</span><input id="profile-cores" class="matcher-input" type="number" min="1" max="256" step="1" inputmode="numeric" placeholder="e.g. 8"></label>
-                <label><span>GPU VRAM / GB</span><input id="profile-vram" class="matcher-input" type="number" min="0" max="128" step="0.5" inputmode="decimal" placeholder="e.g. 8"></label>
-              </div>
-            </fieldset>
-          </div>
-          <div class="matcher-footer">
-            <button id="compare-pc" class="compare-button" type="button">Compare specs <span aria-hidden="true">→</span></button>
-            <p id="matcher-result" class="matcher-result" role="status" aria-live="polite">Choose a fan game and enter its published minimums to compare.</p>
-          </div>
+        <div class="hero-proof">
+          <div><strong>01</strong><span>Official game guide</span></div>
+          <div><strong>02</strong><span>Independent fan projects</span></div>
+          <div><strong>03</strong><span>Living Pokédex</span></div>
         </div>
-        <figure class="matcher-photo">
-          <img src="https://images.unsplash.com/photo-1593640408182-31c70c8268f5?auto=format&amp;fit=crop&amp;w=1200&amp;q=85" alt="Gaming PC, monitor, keyboard, and mouse on a desk" loading="lazy">
-          <figcaption><span>YOUR SETUP, YOUR CALL</span><a href="https://unsplash.com/license" target="_blank" rel="noreferrer">Photo via Unsplash ↗</a></figcaption>
-        </figure>
-      </section>
+      </div>
+      <div class="hero-art" aria-label="Featured Pokémon">
+        <div class="hero-orbit orbit-a"></div>
+        <div class="hero-orbit orbit-b"></div>
+        <div class="hero-spark spark-a">✦</div>
+        <div class="hero-spark spark-b">✧</div>
+        <div class="hero-pokemon pokemon-back"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/6.png" alt="" loading="lazy"></div>
+        <div class="hero-pokemon pokemon-front"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png" alt="Pikachu" fetchpriority="high"></div>
+        <div class="hero-card-float"><span class="float-icon">⚡</span><span><b>Pokémon of the day</b><small id="hero-daily-name">Pikachu</small></span><i>↗</i></div>
+        <div class="hero-number">№ 025</div>
+      </div>
+    </section>
 
-      <section class="catalog-layout" aria-label="Game catalog">
-        <aside class="sidebar" aria-label="Catalog controls">
-          <div class="sidebar-heading"><span>YOUR LIBRARY</span><button class="text-button" id="add-title" type="button">＋ Add title</button></div>
-          <nav class="filter-list" aria-label="Filter games">
-            <button class="filter-button is-active" data-filter="all" type="button"><span class="filter-icon">▦</span> All titles <span class="filter-count" id="count-all">0</span></button>
-            <button class="filter-button" data-filter="current" type="button"><span class="filter-icon">↗</span> Official options <span class="filter-count" id="count-current">0</span></button>
-            <button class="filter-button" data-filter="legacy" type="button"><span class="filter-icon">◷</span> Legacy releases <span class="filter-count" id="count-legacy">0</span></button>
-            <button class="filter-button" data-filter="fan" type="button"><span class="filter-icon">✳</span> Fan projects <span class="filter-count" id="count-fan">0</span></button>
-            <button class="filter-button" data-filter="waitlist" type="button"><span class="filter-icon">☆</span> My waitlist <span class="filter-count" id="count-waitlist">0</span></button>
-          </nav>
-          <div class="sidebar-rule"></div>
-          <label class="field-label" for="platform-filter">PLATFORM</label>
-          <select id="platform-filter" class="platform-select">
-            <option value="all">All platforms</option>
+    <section class="daily-strip section-wrap" aria-labelledby="daily-title">
+      <div class="daily-label">
+        <span class="daily-icon">✦</span>
+        <div><p class="eyebrow">TODAY IN THE POKÉDEX</p><h2 id="daily-title">Daily field note</h2></div>
+      </div>
+      <div class="daily-content">
+        <div class="daily-pokemon" id="daily-art"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" alt="" loading="lazy"></div>
+        <div class="daily-fact"><b id="daily-name">Pikachu · #025</b><p id="daily-text">A new Pokédex entry is being fetched. Check back for today's discovery.</p><small id="daily-source">Pokédex entry · Powered by PokéAPI</small></div>
+        <button class="daily-refresh" id="daily-refresh" type="button" aria-label="Refresh daily field note">↻</button>
+      </div>
+    </section>
+
+    <section class="theme-bar section-wrap" aria-label="Region theme and display settings">
+      <div class="theme-prompt"><span class="tiny-spark">✧</span> Pick your region aesthetic</div>
+      <div class="theme-options" id="theme-options">
+        <button class="theme-chip active" data-theme-choice="league" type="button"><i class="theme-dot dot-league"></i> League</button>
+        <button class="theme-chip" data-theme-choice="kanto" type="button"><i class="theme-dot dot-kanto"></i> Kanto</button>
+        <button class="theme-chip" data-theme-choice="johto" type="button"><i class="theme-dot dot-johto"></i> Johto</button>
+        <button class="theme-chip" data-theme-choice="hoenn" type="button"><i class="theme-dot dot-hoenn"></i> Hoenn</button>
+        <button class="theme-chip" data-theme-choice="sinnoh" type="button"><i class="theme-dot dot-sinnoh"></i> Sinnoh</button>
+        <button class="theme-chip" data-theme-choice="unova" type="button"><i class="theme-dot dot-unova"></i> Unova</button>
+        <button class="theme-chip" data-theme-choice="kalos" type="button"><i class="theme-dot dot-kalos"></i> Kalos</button>
+        <button class="theme-chip" data-theme-choice="alola" type="button"><i class="theme-dot dot-alola"></i> Alola</button>
+        <button class="theme-chip" data-theme-choice="galar" type="button"><i class="theme-dot dot-galar"></i> Galar</button>
+        <button class="theme-chip" data-theme-choice="paldea" type="button"><i class="theme-dot dot-paldea"></i> Paldea</button>
+      </div>
+    </section>
+
+    <section class="section-wrap content-section" id="games">
+      <div class="section-heading">
+        <div><p class="eyebrow">THE ADVENTURE STARTS HERE</p><h2>Explore the <em>game library</em></h2><p class="section-subtitle">Mainline journeys, side adventures and new releases — with official places to check details.</p></div>
+        <div class="section-mark">GAME<br><span>INDEX</span><i>001—∞</i></div>
+      </div>
+      <div class="games-toolbar">
+        <label class="search-field"><span>⌕</span><input id="game-search" type="search" placeholder="Search a game, region or platform…" autocomplete="off"><kbd>/</kbd></label>
+        <div class="toolbar-actions">
+          <select id="game-generation" aria-label="Filter by generation">
+            <option value="all">All generations</option>
+            <option value="1">Generation I</option><option value="2">Generation II</option><option value="3">Generation III</option><option value="4">Generation IV</option><option value="5">Generation V</option><option value="6">Generation VI</option><option value="7">Generation VII</option><option value="8">Generation VIII</option><option value="9">Generation IX</option><option value="upcoming">Upcoming</option><option value="spin-off">Spin-offs</option>
           </select>
-          <div class="side-note">
-            <span class="side-note-icon" aria-hidden="true">i</span>
-            <p>Availability can vary by region. Always check the publisher or platform store for current options.</p>
+          <div class="view-switch" role="group" aria-label="Game layout">
+            <button class="view-button active" data-game-view="grid" type="button" aria-label="Grid view">▦</button>
+            <button class="view-button" data-game-view="list" type="button" aria-label="List view">☷</button>
           </div>
-        </aside>
-
-        <section class="catalog-main" aria-label="Titles">
-          <div class="catalog-toolbar">
-            <div class="results-label"><span id="results-count">0 TITLES</span><span class="results-divider">/</span><span id="results-filter">ALL RELEASES</span></div>
-            <label class="search-box">
-              <span class="search-icon" aria-hidden="true">⌕</span>
-              <input id="search" type="search" placeholder="Search games or platforms" autocomplete="off" aria-label="Search games or platforms">
-              <kbd>/</kbd>
-            </label>
-          </div>
-          <div id="game-list" class="game-list" aria-live="polite"></div>
-        </section>
-
-        <aside class="detail-panel" id="detail-panel" aria-live="polite" aria-label="Selected game details">
-          <div class="detail-empty">
-            <span class="detail-glyph" aria-hidden="true">✳</span>
-            <p class="eyebrow">PICK A TITLE</p>
-            <h2>Your next save starts here.</h2>
-            <p>Select a game to see its platform, release status, and official information.</p>
-          </div>
-        </aside>
-      </section>
-
-      <footer class="page-footer">
-        <p>Independent fan project. Not affiliated with or endorsed by Nintendo, Game Freak, or The Pokémon Company.</p>
-        <p>No game files, ROMs, keys, or copyrighted artwork are included or hosted here.</p>
-      </footer>
-    </main>
-
-    <dialog id="add-dialog" class="add-dialog">
-      <form id="add-form" method="dialog">
-        <div class="dialog-heading"><div><p class="eyebrow">PERSONAL CATALOG</p><h2>Add a title</h2></div><button class="close-button" type="button" id="close-dialog" aria-label="Close">×</button></div>
-        <label class="field-label" for="new-name">GAME TITLE</label>
-        <input id="new-name" class="form-input" name="name" required maxlength="80" placeholder="e.g. Pokémon Pinball">
-        <label class="field-label" for="new-kind">PROJECT TYPE</label>
-        <select id="new-kind" class="form-input" name="kind"><option value="official">Official Pokémon release</option><option value="fan">Fan-made PC project</option></select>
-        <label class="field-label" for="new-platform">PLATFORM</label>
-        <input id="new-platform" class="form-input" name="platform" required maxlength="50" placeholder="e.g. Game Boy Color">
-        <div id="official-status-field">
-          <label class="field-label" for="new-status">STATUS</label>
-          <select id="new-status" class="form-input" name="status"><option value="current">Official option to check</option><option value="legacy">Legacy release</option></select>
         </div>
-        <label class="field-label" for="new-link">OFFICIAL OR CREATOR PAGE</label>
-        <input id="new-link" class="form-input" name="link" type="url" placeholder="https://">
-        <p class="dialog-footnote">Optional minimums from the project page. Unknown values stay blank.</p>
-        <label class="field-label" for="new-req-os">MINIMUM OS</label>
-        <select id="new-req-os" class="form-input" name="reqOs"><option value="">Not listed</option><option value="any">Any desktop OS</option><option value="windows">Windows</option><option value="macos">macOS</option><option value="linux">Linux</option></select>
-        <label class="field-label" for="new-req-ram">MINIMUM RAM (GB)</label>
-        <input id="new-req-ram" class="form-input" name="reqRam" type="number" min="1" max="512" step="1" inputmode="numeric">
-        <label class="field-label" for="new-req-cores">MINIMUM CPU CORES</label>
-        <input id="new-req-cores" class="form-input" name="reqCores" type="number" min="1" max="256" step="1" inputmode="numeric">
-        <label class="field-label" for="new-req-vram">MINIMUM GPU VRAM (GB)</label>
-        <input id="new-req-vram" class="form-input" name="reqVram" type="number" min="0" max="128" step="0.5" inputmode="decimal">
-        <button class="submit-button" type="submit">Add to catalog <span aria-hidden="true">→</span></button>
-        <p class="dialog-footnote">This stays in this browser only. Don’t add links to unauthorized copies.</p>
-      </form>
-    </dialog>
-  </body>
+      </div>
+      <div class="filter-row" id="game-kind-filters">
+        <button class="filter-pill active" data-kind="all" type="button">All games</button>
+        <button class="filter-pill" data-kind="main" type="button">Main series</button>
+        <button class="filter-pill" data-kind="spin-off" type="button">Spin-offs</button>
+        <button class="filter-pill" data-kind="upcoming" type="button">Upcoming</button>
+        <span class="result-count" id="game-result-count">Loading catalogue…</span>
+      </div>
+      <div class="game-grid" id="game-grid" aria-live="polite"></div>
+      <div class="catalog-footer">
+        <p>Catalogue is a curated index, not an exhaustive record of every regional release, edition or delisted title.</p>
+        <a href="https://in.portal-pokemon.com/game/" target="_blank" rel="noopener noreferrer">Official Pokémon game index ↗</a>
+        <a href="https://www.nintendo.com/us/store/games/pokemon-games/" target="_blank" rel="noopener noreferrer">Nintendo Pokémon games ↗</a>
+      </div>
+    </section>
+
+    <section class="fan-section" id="fan-games">
+      <div class="section-wrap content-section">
+        <div class="section-heading">
+          <div><p class="eyebrow">MADE BY THE COMMUNITY</p><h2>Explore the <em>fan universe</em></h2><p class="section-subtitle">Independent adventures, browser games, battle simulators and ROM hacks. Every listing is unofficial.</p></div>
+          <div class="fan-stamp"><span>FAN</span><b>MADE</b><small>NOT OFFICIAL</small></div>
+        </div>
+        <div class="notice notice-fan"><span>ⓘ</span><p>Fan projects are not Nintendo releases or endorsements. Project status and availability can change. We link to creator pages or developer threads only — Poke-Switch does not host ROMs, game files or downloads.</p></div>
+        <div class="filter-row" id="fan-filters">
+          <button class="filter-pill active" data-fan-kind="all" type="button">All projects</button>
+          <button class="filter-pill" data-fan-kind="story" type="button">Story adventures</button>
+          <button class="filter-pill" data-fan-kind="browser" type="button">Browser games</button>
+          <button class="filter-pill" data-fan-kind="mmo" type="button">Online / MMO</button>
+          <button class="filter-pill" data-fan-kind="romhack" type="button">ROM hacks</button>
+          <button class="filter-pill" data-fan-kind="3d" type="button">3D projects</button>
+        </div>
+        <div class="fan-grid" id="fan-grid"></div>
+        <div class="catalog-footer">
+          <p>Curated selection. It is not possible to maintain a complete list of every fan project worldwide.</p>
+          <a href="https://www.pokecommunity.com/" target="_blank" rel="noopener noreferrer">Explore PokéCommunity ↗</a>
+          <a href="https://www.pokemonfight.com/blog/best-pokemon-fan-games" target="_blank" rel="noopener noreferrer">Fan-game research and source notes ↗</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-wrap content-section" id="pokedex">
+      <div class="section-heading">
+        <div><p class="eyebrow">NATIONAL DEX / FIELD GUIDE</p><h2>The <em>Pokédex</em></h2><p class="section-subtitle">Search Pokémon, browse types, inspect stats and open their Pokédex entries.</p></div>
+        <div class="dex-badge"><span>POKÉ</span><b>DEX</b><i>GOTTA KNOW 'EM</i></div>
+      </div>
+      <div class="dex-toolbar">
+        <label class="search-field"><span>⌕</span><input id="dex-search" type="search" placeholder="Search by name or National Dex number…" autocomplete="off"><kbd>↵</kbd></label>
+        <select id="dex-type" aria-label="Filter by Pokémon type">
+          <option value="all">All types</option>
+          <option>normal</option><option>fire</option><option>water</option><option>electric</option><option>grass</option><option>ice</option><option>fighting</option><option>poison</option><option>ground</option><option>flying</option><option>psychic</option><option>bug</option><option>rock</option><option>ghost</option><option>dragon</option><option>dark</option><option>steel</option><option>fairy</option>
+        </select>
+        <button class="button button-soft" id="random-pokemon" type="button">Surprise me ✦</button>
+      </div>
+      <div class="dex-meta"><span id="dex-count">Connecting to PokéAPI…</span><span>Search the National Pokédex</span></div>
+      <div class="dex-grid" id="dex-grid" aria-live="polite"><div class="empty-state">Connecting to the Pokédex…</div></div>
+      <div class="load-more-wrap"><button class="button button-ghost" id="dex-load-more" type="button" hidden>Load more Pokémon <span>↓</span></button></div>
+      <p class="source-note">Pokémon data is supplied by <a href="https://pokeapi.co/docs/v2" target="_blank" rel="noopener noreferrer">PokéAPI</a>. Responses are cached in your browser to reduce repeat requests. Pokémon names, characters and artwork belong to their respective rights holders.</p>
+    </section>
+
+    <section class="mobile-section" id="mobile">
+      <div class="section-wrap content-section">
+        <div class="section-heading">
+          <div><p class="eyebrow">POKÉMON ON THE GO</p><h2>Mobile <em>adventures</em></h2><p class="section-subtitle">Official Pokémon mobile apps and cross-platform experiences.</p></div>
+          <div class="mobile-mark">GO<span>!</span></div>
+        </div>
+        <div class="mobile-grid" id="mobile-grid"></div>
+        <div class="catalog-footer">
+          <p>Availability varies by country, device and store region. Check the publisher's official page before installing.</p>
+          <a href="https://in.portal-pokemon.com/apps/" target="_blank" rel="noopener noreferrer">Official Pokémon India apps ↗</a>
+          <a href="https://play.google.com/store/apps/developer?id=The+Pok%C3%A9mon+Company" target="_blank" rel="noopener noreferrer">Google Play · The Pokémon Company ↗</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="request-section" id="requests">
+      <div class="section-wrap request-layout">
+        <div class="request-copy">
+          <p class="eyebrow"><span class="eyebrow-dot"></span> TRAINERS, MAKE SOME NOISE</p>
+          <h2>We want Pokémon<br><em>on PC.</em></h2>
+          <p>Build a wishlist of official Pokémon games you'd love to play on PC. Vote for your favourites, add a request, and prepare a message for Nintendo.</p>
+          <div class="request-callout"><span>✉</span><p><b>Your voice matters.</b><small>Poke-Switch is independent. Requests are not sent to Nintendo automatically.</small></p></div>
+          <a class="button button-light" href="https://en-americas-support.nintendo.com/app/home" target="_blank" rel="noopener noreferrer">Nintendo official support ↗</a>
+        </div>
+        <div class="request-board">
+          <div class="request-board-head"><div><p class="eyebrow">COMMUNITY WISHBOARD</p><h3>PC release requests</h3></div><span class="local-tag">LOCAL TO THIS BROWSER</span></div>
+          <form id="request-form" class="request-form">
+            <label for="request-title">Which game should come to PC?</label>
+            <div class="request-input-row"><input id="request-title" maxlength="90" required placeholder="e.g. Pokémon Legends: Arceus"><button type="submit">Add request <span>＋</span></button></div>
+            <p class="form-hint">Requests and votes stay on this device. There is no public server or global vote count yet.</p>
+          </form>
+          <div class="request-list" id="request-list"></div>
+          <div class="message-box"><div><b>Write to Nintendo</b><p>Copy a respectful request message and open Nintendo's official support page.</p></div><button id="copy-request" type="button">Copy message ↗</button></div>
+          <p class="copy-feedback" id="copy-feedback" role="status" aria-live="polite"></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="section-wrap footer-top">
+      <a class="brand footer-brand" href="#top"><span class="brand-ball" aria-hidden="true"><i></i></span><span class="brand-word">POKE<span>/</span>SWITCH</span></a>
+      <p>A fan-made field guide for the Pokémon universe.</p>
+      <a href="#top" class="back-top">Back to top ↑</a>
+    </div>
+    <div class="section-wrap footer-bottom">
+      <p>Poke-Switch is an independent, unofficial fan project. It is not affiliated with, endorsed by or sponsored by Nintendo, Creatures Inc., GAME FREAK or The Pokémon Company.</p>
+      <p>Pokémon and all related names, characters and artwork are trademarks and property of their respective owners. No ROMs, game files or copyrighted downloads are hosted here.</p>
+      <div class="footer-links"><a href="https://www.pokemon.com/" target="_blank" rel="noopener noreferrer">Pokémon</a><a href="https://www.nintendo.com/" target="_blank" rel="noopener noreferrer">Nintendo</a><a href="https://pokeapi.co/" target="_blank" rel="noopener noreferrer">PokéAPI</a><a href="https://www.pokecommunity.com/" target="_blank" rel="noopener noreferrer">PokéCommunity</a></div>
+    </div>
+  </footer>
+
+  <dialog id="pokemon-dialog" class="pokemon-dialog" aria-labelledby="pokemon-dialog-title">
+    <button class="dialog-close" id="pokemon-dialog-close" type="button" aria-label="Close Pokémon details">×</button>
+    <div id="pokemon-dialog-content"></div>
+  </dialog>
+
+  <dialog id="theme-dialog" class="theme-dialog" aria-labelledby="theme-dialog-title">
+    <button class="dialog-close" id="theme-dialog-close" type="button" aria-label="Close theme selector">×</button>
+    <p class="eyebrow">CHANGE YOUR REGION</p><h2 id="theme-dialog-title">Choose a theme</h2>
+    <div class="theme-dialog-grid" id="theme-dialog-options"></div>
+  </dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
 </html>
