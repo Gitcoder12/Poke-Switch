@@ -96,8 +96,8 @@ test("region themes are defined in JavaScript and CSS", () => {
 test("the default theme is light with a red accent and rounded card styling", () => {
   assert.match(css, /color-scheme:light/);
   assert.match(css, /--accent:#df2938/);
-  assert.match(css, /\\.dex-card\\{[^}]*border-radius:25px/s);
-  assert.match(css, /\\.dex-art img\\{[^}]*width:174px/s);
+  assert.match(css, /\.dex-card\{[^}]*border-radius:25px/s);
+  assert.match(css, /\.dex-art img\{[^}]*width:174px/s);
 });
 
 test("Pokédex cards use named official artwork and accessible image loading", () => {
