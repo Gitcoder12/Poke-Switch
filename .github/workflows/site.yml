@@ -9,6 +9,7 @@ on:
       - "assets/css/styles.css"
       - "assets/js/app.js"
       - "data/catalogue.js"
+      - "data/regions.js"
       - "README.md"
       - "tests/**"
       - ".github/workflows/site.yml"
