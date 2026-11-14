@@ -43,7 +43,7 @@ test("all requested product areas and application hooks are present", () => {
   for (const feature of [
     "pokemon-species", "pokemon-species/", "type/",
     "localStorage", "poke-switch:requests", "poke-switch:voted",
-    "data-theme-choice", "PokeSwitchData"
+    "data-theme-choice", "PokeSwitchData", "poke-switch:theme:v2"
   ]) {
     assert.ok(app.includes(feature), "Missing application feature hook: " + feature);
   }
