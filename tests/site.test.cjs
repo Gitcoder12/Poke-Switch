@@ -218,7 +218,7 @@ test("game cards and the PC wishboard render PokéAPI artwork with a sprite fall
 
 test("wishboard input is bounded, duplicate titles are rejected, and votes remain local", () => {
   assert.match(app, /title\.length<3 \|\| title\.length>90/);
-  assert.match(app, /request\.title\.toLowerCase\(\)===title\.toLowerCase\(\)/);
+  assert.match(app, /requests\.find\(item=>item\.title\.toLowerCase\(\)===title\.toLowerCase\(\)\)/);
   assert.match(app, /function toggleVote\(id\)/);
   assert.ok(app.includes("poke-switch:voted"));
   assert.ok(app.includes("poke-switch:requests"));
