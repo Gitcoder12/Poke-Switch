@@ -70,7 +70,7 @@ test("region themes are defined in both JavaScript and CSS", () => {
   for (const name of themeNames) {
     assert.ok(app.includes('"' + name + '"'), "Missing JS theme: " + name);
     if (name === "league") {
-      assert.match(css, /:root\\s*\\{/);
+      assert.match(css, /:root\s*\{/);
     } else {
       assert.ok(css.includes('data-theme="' + name + '"'), "Missing CSS theme: " + name);
     }
