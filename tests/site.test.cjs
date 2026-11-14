@@ -11,6 +11,12 @@ const app = fs.readFileSync(path.join(root, "assets", "js", "app.js"), "utf8");
 const css = fs.readFileSync(path.join(root, "assets", "css", "styles.css"), "utf8");
 const catalogue = fs.readFileSync(path.join(root, "data", "catalogue.js"), "utf8");
 
+test("the Windows launcher starts the documented local server", () => {
+  const launcher = fs.readFileSync(path.join(root, "run-local.bat"), "utf8");
+  assert.match(launcher, /python -m http.server 8000/);
+  assert.match(launcher, /http:\/\/localhost:8000/);
+});
+
 test("the page loads local styles, catalogue data and application code", () => {
   assert.match(html, /href="assets\/css\/styles\.css"/);
   assert.match(html, /src="data\/catalogue\.js"/);
