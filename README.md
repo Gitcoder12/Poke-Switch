@@ -36,6 +36,47 @@ Poke-Switch does not distribute unauthorized game files or copyrighted assets. U
 
 ---
 
+
+## Current website
+
+Run the site locally from the repository root:
+
+```bash
+python -m http.server 8000
+```
+
+Open [http://localhost:8000](http://localhost:8000). The site is static HTML, CSS and JavaScript; no build step or backend is required.
+
+The current website includes:
+
+- A curated catalogue of main-series and selected spin-off games, with official Pokémon and Nintendo links.
+- Region-inspired visual themes and grid/list catalogue layouts.
+- A curated directory of independent fan projects, linked to their project pages or developer threads.
+- A searchable National Pokédex, type filters, Pokémon detail cards and a daily Pokédex entry.
+- Official Pokémon mobile-app links.
+- A PC-release wishboard where visitors can add requests and vote locally in their own browser.
+
+### Data and limits
+
+- Pokédex names, species records, type data, stats and flavor text are loaded from [PokéAPI](https://pokeapi.co/docs/v2). API responses are cached in browser storage.
+- Pokémon sprites are loaded from the public [PokéAPI sprites repository](https://github.com/PokeAPI/sprites).
+- Official game, mobile-app and Nintendo links point to publisher-controlled catalogues or product pages. Store availability can differ by country and device.
+- The game catalogue is curated; it is not an exhaustive history of every regional release, edition or delisted product.
+- The fan-game directory is a curated selection, not a complete list. Fan projects are unofficial and can disappear or change. Poke-Switch does not host their game files, ROMs or downloads.
+- PC requests and votes use this browser's local storage only. They are not transmitted to Nintendo, uploaded to a server or counted as global community votes.
+- The website does not emulate games, provide game ROMs or distribute copyrighted assets.
+
+### Checks
+
+Use Node.js 22 or later:
+
+```bash
+node --check app.js
+node --test tests/site.test.cjs
+```
+
+GitHub Actions runs the static checks for website changes.
+
 ## AI-maintained project notes (secondary — 2026-11-14)
 
 This section supplements the maintainer-authored README above. The preceding README text is restored from the last fuller maintainer-authored version at commit `a581542257b171a6f9c9052788b572f87ac7d7a0`. It is preserved above rather than replaced by generated project notes.
