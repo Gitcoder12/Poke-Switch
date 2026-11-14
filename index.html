@@ -11,6 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/styles.css">
   <script src="data/catalogue.js" defer></script>
+  <script src="data/regions.js" defer></script>
   <script src="assets/js/app.js" defer></script>
 </head>
 <body data-theme="league">
@@ -24,6 +25,7 @@
       <nav class="side-nav" aria-label="Main navigation">
         <a class="side-link active" href="#discover" data-view-target="discover"><span class="side-icon">◈</span><span>Discover</span><kbd>01</kbd></a>
         <a class="side-link" href="#games" data-view-target="games"><span class="side-icon">▦</span><span>Game library</span><kbd>02</kbd></a>
+        <a class="side-link" href="#regions" data-view-target="regions"><span class="side-icon">⌖</span><span>Region atlas</span><kbd>03</kbd></a>
         <a class="side-link" href="#pokedex" data-view-target="pokedex"><span class="side-icon">◉</span><span>Pokédex</span><kbd>03</kbd></a>
         <a class="side-link" href="#fan-games" data-view-target="fan-games"><span class="side-icon">✳</span><span>Fan universe</span><kbd>04</kbd></a>
         <a class="side-link" href="#mobile" data-view-target="mobile"><span class="side-icon">▣</span><span>Mobile games</span><kbd>05</kbd></a>
@@ -152,6 +154,18 @@
     </section>
         </section>
 
+        <section class="app-view page-view region-view" id="view-regions" data-view="regions" aria-labelledby="regions-title" hidden>
+          <div class="page-intro region-page-intro">
+            <div><span class="section-overline">THE WORLD MAP COLLECTION</span><h1 id="regions-title">Nine regions.<br><em>Endless discovery.</em></h1><p>Open a region to explore its official map artwork, signature landmarks and the games that take you there.</p></div>
+            <span class="page-intro-mark">REGION<br>ATLAS <b>GEN I—IX</b></span>
+          </div>
+          <section class="region-atlas-content" aria-label="Pokémon region map collection">
+            <div class="region-atlas-toolbar"><span>OFFICIAL REGION MAP ARTWORK</span><span>09 MAPS <i></i> SELECT A REGION TO EXPAND</span></div>
+            <div class="region-grid" id="region-grid" aria-live="polite"></div>
+            <p class="region-atlas-note">Map artwork is shown for fan reference. Product and map availability can vary by country. Pokémon and all related artwork are the property of their respective rights holders. <a href="https://www.pokemon.com/us/news/adventure-from-kanto-to-paldea-with-the-pokemon-center-s-region-map-posters" target="_blank" rel="noopener noreferrer">About the official region map collection</a>.</p>
+          </section>
+        </section>
+
         <section class="app-view page-view" id="view-fan-games" data-view="fan-games" aria-labelledby="fan-title" hidden>
           <div class="page-intro"><div><span class="section-overline">BUILT BY TRAINERS, FOR TRAINERS</span><h1 id="fan-title">Beyond the <em>official world.</em></h1><p>Independent adventures, browser games, online projects and fan-made experiments.</p></div><span class="page-intro-mark">FAN<br>UNIVERSE <b>COMMUNITY</b></span></div>
           <section class="fan-section" id="fan-games">
@@ -252,6 +266,11 @@
   <dialog id="pokemon-dialog" class="pokemon-dialog" aria-labelledby="pokemon-dialog-title">
     <button class="dialog-close" id="pokemon-dialog-close" type="button" aria-label="Close Pokémon details">×</button>
     <div id="pokemon-dialog-content"></div>
+  </dialog>
+
+  <dialog id="region-dialog" class="region-dialog" aria-labelledby="region-dialog-title">
+    <button class="dialog-close" id="region-dialog-close" type="button" aria-label="Close region map">×</button>
+    <div id="region-dialog-content"></div>
   </dialog>
 
   <dialog id="theme-dialog" class="theme-dialog" aria-labelledby="theme-dialog-title">
