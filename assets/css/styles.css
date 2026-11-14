@@ -855,3 +855,9 @@ button:focus-visible,a:focus-visible{outline:3px solid rgba(217,45,58,.48);outli
 @media(prefers-reduced-motion:reduce){
   .region-card,.pokemon-gallery-stage img,.game-card,.launch-card{transition:none!important;animation:none!important}
 }
+
+.topbar-relationship{font:700 8px "DM Mono",monospace;letter-spacing:.12em;color:#9a8580;white-space:nowrap}
+.topbar-official-link{font:800 11px Outfit,sans-serif;color:#5e4b48;padding:6px 8px;border-radius:7px;background:#fff8ef;border:1px solid rgba(92,53,45,.10);transition:color .2s,border-color .2s}
+.topbar-official-link:hover{color:#d02d3a;border-color:rgba(217,45,58,.32)}
+@media(max-width:980px){.topbar-relationship{display:none}}
+@media(max-width:760px){.topbar-official-link{display:none}}
