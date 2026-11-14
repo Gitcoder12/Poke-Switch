@@ -861,3 +861,121 @@ button:focus-visible,a:focus-visible{outline:3px solid rgba(217,45,58,.48);outli
 .topbar-official-link:hover{color:#d02d3a;border-color:rgba(217,45,58,.32)}
 @media(max-width:980px){.topbar-relationship{display:none}}
 @media(max-width:760px){.topbar-official-link{display:none}}
+
+
+/* FIELD ARTWORK + WISHBOARD CARDS */
+.game-card{
+  display:flex;flex-direction:column;min-height:350px;padding:0;overflow:hidden;
+}
+.game-card-art{
+  position:relative;display:grid;place-items:center;min-height:164px;padding:18px 18px 27px;
+  overflow:hidden;background:radial-gradient(ellipse at 50% 35%,#fffdf8 0%,#f5e9dd 68%,#efdfd1 100%);
+  border-bottom:1px solid rgba(92,53,45,.10);
+}
+.game-card-art:before,.wish-artwork:before{
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:.36;
+  background-image:linear-gradient(90deg,transparent 95%,rgba(176,116,100,.14) 96%),linear-gradient(transparent 95%,rgba(176,116,100,.14) 96%);
+  background-size:22px 22px;mask-image:radial-gradient(ellipse at center,black,transparent 80%);
+}
+.game-art-stack{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;gap:2px;width:100%;height:132px}
+.game-art-image{width:min(46%,148px);height:132px;object-fit:contain;filter:drop-shadow(0 13px 11px rgba(61,39,33,.18));transition:transform .35s cubic-bezier(.2,.8,.2,1),filter .35s}
+.game-art-image:only-child{width:min(70%,168px)}
+.game-card:hover .game-art-image{transform:translateY(-4px) scale(1.035);filter:drop-shadow(0 18px 14px rgba(61,39,33,.22))}
+.game-art-label{
+  position:absolute;z-index:2;left:15px;bottom:8px;max-width:70%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  color:#8e7770;font:700 8px/1.2 "DM Mono",monospace;letter-spacing:.09em;text-transform:uppercase;
+}
+.game-art-source{position:absolute;right:14px;bottom:8px;color:#a48f85;font:500 7px/1.2 "DM Mono",monospace;letter-spacing:.08em}
+.game-card-inner{display:flex;flex:1;flex-direction:column;min-width:0;padding:17px 18px 18px}
+.game-card-inner .game-card-heading{align-items:flex-start}
+.game-card-inner .game-card-heading h3{font-size:20px;line-height:1.16}
+.game-card-inner .game-card-bottom{display:flex;flex-direction:column;gap:11px;padding-top:16px}
+.game-card-inner .game-card-bottom>span{font-size:11px;line-height:1.6;color:#806d67}
+.game-card-inner .game-card-bottom>a{align-self:flex-start}
+.game-card-art.artwork-unavailable .game-art-stack,
+.wish-artwork.artwork-unavailable .wish-art-stack{opacity:.18}
+.request-board{
+  background:#fffdf8;color:#281d1d;border:1px solid rgba(92,53,45,.13);
+  box-shadow:0 22px 55px rgba(90,47,38,.09),inset 0 1px 0 #fff;backdrop-filter:none;
+}
+.request-board-head{border-color:rgba(92,53,45,.12)}
+.request-board-head h3{font:800 23px/1.08 Outfit,sans-serif;letter-spacing:-.04em;color:#281d1d}
+.request-board-head .eyebrow{color:#d92d3a;font-size:9px;letter-spacing:.14em}
+.local-tag{background:#fff2eb;color:#b52b38;border-color:rgba(217,45,58,.22);font-size:8px}
+.request-form{border-color:rgba(92,53,45,.12)}
+.request-form label{font:700 13px/1.4 Outfit,sans-serif;color:#382a29}
+.request-input-row{gap:9px}
+.request-input-row input{
+  min-height:48px;padding:12px 15px;border:1px solid rgba(92,53,45,.17);border-radius:12px;
+  background:#fffaf4;color:#281d1d;font:500 14px Outfit,sans-serif;transition:border-color .22s,box-shadow .22s,background .22s;
+}
+.request-input-row input:focus{border-color:#d92d3a;box-shadow:0 0 0 4px rgba(217,45,58,.12);background:#fff}
+.request-input-row button{
+  min-height:48px;padding:0 17px;border-radius:12px;background:#d92d3a;color:#fff;
+  font:800 12px Outfit,sans-serif;box-shadow:0 7px 16px rgba(217,45,58,.16);transition:transform .2s,box-shadow .2s,background .2s;
+}
+.request-input-row button:hover{transform:translateY(-2px);box-shadow:0 12px 24px rgba(217,45,58,.22);background:#c92332}
+.form-hint{font-size:10px;line-height:1.55;color:#927e77}
+.request-list{gap:10px;padding:16px 0}
+.request-item{
+  display:grid;grid-template-columns:96px minmax(0,1fr) 42px;gap:13px;align-items:center;
+  min-width:0;padding:10px;border:1px solid rgba(92,53,45,.12);border-radius:16px;
+  background:linear-gradient(115deg,#fffdf8 0%,#fff8f0 100%);
+  box-shadow:0 7px 18px rgba(90,47,38,.045),inset 0 1px 0 #fff;
+  transition:transform .22s,border-color .22s,box-shadow .22s;
+}
+.request-item:hover{transform:translateY(-3px);border-color:rgba(217,45,58,.27);box-shadow:0 15px 28px rgba(90,47,38,.09)}
+.wish-artwork{
+  position:relative;display:grid;place-items:center;min-width:0;min-height:102px;overflow:hidden;
+  border-radius:12px;background:radial-gradient(ellipse at center,#fffdf8 0%,#f4e6d9 78%);
+}
+.wish-art-stack{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;width:100%;height:84px;gap:0}
+.wish-art-image{width:50%;height:80px;object-fit:contain;filter:drop-shadow(0 9px 7px rgba(61,39,33,.16))}
+.wish-art-image:only-child{width:88%;height:86px}
+.wish-art-caption{
+  position:absolute;z-index:2;left:5px;right:5px;bottom:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  text-align:center;color:#8e7770;font:700 7px/1.2 "DM Mono",monospace;letter-spacing:.04em;text-transform:uppercase;
+}
+.wish-copy{display:flex;flex-direction:column;gap:5px;min-width:0}
+.wish-copy-kicker{font:700 8px/1.2 "DM Mono",monospace;letter-spacing:.12em;color:#ba3841}
+.request-title{font:800 16px/1.2 Outfit,sans-serif;color:#2c2020;overflow-wrap:anywhere}
+.request-votes{font:10px/1.4 "DM Mono",monospace;color:#8b7770}
+.vote-button{
+  width:40px;height:40px;border-radius:12px;background:#fff3ec;color:#d92d3a;border:1px solid rgba(217,45,58,.18);
+  font-size:18px;font-weight:800;transition:transform .2s,background .2s,color .2s,box-shadow .2s;
+}
+.vote-button:hover{transform:translateY(-2px);box-shadow:0 7px 15px rgba(217,45,58,.13)}
+.vote-button.voted{background:#d92d3a;color:#fff;border-color:#d92d3a}
+.message-box{border-color:rgba(92,53,45,.18);background:#fffaf4}
+.message-box b{font:800 14px Outfit,sans-serif;color:#2b2020}
+.message-box p{font-size:10px;line-height:1.5;color:#856f69}
+.message-box button{font-size:10px;color:#c72a37;border-color:rgba(217,45,58,.35);padding:10px 13px}
+.copy-feedback{color:#b52d39;font-size:10px;line-height:1.5}
+@media(max-width:760px){
+  .game-card{min-height:320px}
+  .game-card-art{min-height:145px}
+  .game-art-stack{height:115px}
+  .game-art-image{height:115px}
+  .request-item{grid-template-columns:82px minmax(0,1fr) 38px;gap:9px;padding:8px}
+  .wish-artwork{min-height:92px}
+  .wish-art-stack{height:74px}
+  .wish-art-image{height:70px}
+  .request-title{font-size:14px}
+  .vote-button{width:36px;height:36px}
+}
+@media(max-width:420px){
+  .request-board{padding:15px}
+  .request-board-head{align-items:flex-start;flex-direction:column}
+  .request-input-row{flex-direction:column}
+  .request-input-row button{min-height:46px}
+  .request-item{grid-template-columns:68px minmax(0,1fr) 34px;gap:8px}
+  .wish-artwork{min-height:82px}
+  .wish-art-stack{height:64px}
+  .wish-art-image{height:60px}
+  .wish-art-caption{font-size:6px}
+  .request-title{font-size:13px}
+  .vote-button{width:32px;height:32px}
+}
+@media(prefers-reduced-motion:reduce){
+  .game-art-image,.request-item,.vote-button,.request-input-row input,.request-input-row button{transition:none!important}
+}
