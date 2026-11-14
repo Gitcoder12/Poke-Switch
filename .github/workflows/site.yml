@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - "index.html"
+      - "run-local.bat"
       - "assets/css/styles.css"
       - "assets/js/app.js"
       - "data/catalogue.js"
