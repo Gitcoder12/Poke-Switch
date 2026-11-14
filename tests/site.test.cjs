@@ -182,12 +182,12 @@ test("the interface does not include decorative emoji glyphs", () => {
 
 
 test("all app screens remain inside one shared main landmark", () => {
-  const mainOpen = [...html.matchAll(/<main\\b/g)];
-  const mainClose = [...html.matchAll(/<\\/main>/g)];
-  assert.equal(mainOpen.length, 1, "The document must have one main landmark");
-  assert.equal(mainClose.length, 1, "The main landmark must close exactly once");
-  const mainStart = mainOpen[0].index;
-  const mainEnd = mainClose[0].index;
+  const mainOpen = html.split("<main").length - 1;
+  const mainClose = html.split("</main>").length - 1;
+  assert.equal(mainOpen, 1, "The document must have one main landmark");
+  assert.equal(mainClose, 1, "The main landmark must close exactly once");
+  const mainStart = html.indexOf("<main");
+  const mainEnd = html.indexOf("</main>");
   const viewStarts = [...html.matchAll(/<section class="app-view/g)].map(match => match.index);
   assert.equal(viewStarts.length, 7, "All seven app views must exist");
   for (const start of viewStarts) {
