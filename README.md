@@ -1,89 +1,80 @@
 # Poke-Switch
 
-A community-powered Pokémon game discovery and request platform.
+An independent Pokémon discovery app for official games, fan projects, the Pokédex and mobile adventures.
 
-Discover official Pokémon games, explore available PC options, and submit or vote on ideas for future Pokémon games and features.
+## Open the website
 
-## Features
+**Windows:** double-click `run-local.bat` in the project folder. It starts the local website and opens your browser.
 
-- Browse a catalog of Pokémon games with links to official sources.
-- Request PC releases, remakes, features, and new game ideas.
-- Vote on community requests.
-- Save games to a personal wishlist.
+Keep the server window open while using the app. Press `Ctrl + C` in that window to stop it.
 
-## Official Pokémon Links
-
-- [Official Pokémon Website](https://www.pokemon.com/)
-- [Pokémon Video Games](https://www.pokemon.com/us/pokemon-video-games)
-- [Nintendo Games Store](https://www.nintendo.com/us/store/games/)
-- [Pokémon Support](https://support.pokemon.com/hc/en-us)
-
-## Fan Games & Community
-
-These are independent, unofficial fan projects:
-
-- [Pokémon Showdown](https://pokemonshowdown.com/) — Online battle simulator.
-- [Pokémon Uranium](https://pokemonuranium.co/) — Fan-made adventure.
-- [Pokémon Insurgence](https://p-insurgence.com/) — Fan game set in the Torren region.
-- [Pokémon Reborn](https://www.rebornevo.com/) — Story-driven fan game.
-- [PokéCommunity](https://www.pokecommunity.com/) — Pokémon fan community and game development forums.
-
-## Disclaimer
-
-Poke-Switch is an independent fan project and is not affiliated with or endorsed by Nintendo, Game Freak, Creatures Inc., or The Pokémon Company. Pokémon and related intellectual property belong to their respective rights holders.
-
-Poke-Switch does not distribute unauthorized game files or copyrighted assets. Users are responsible for complying with applicable laws and third-party terms.
-
----
-
-
-## Current website
-
-Run the site locally from the repository root:
+**Manual start:** open a terminal in this folder and run:
 
 ```bash
 python -m http.server 8000
 ```
 
-Open [http://localhost:8000](http://localhost:8000). The site is static HTML, CSS and JavaScript; no build step or backend is required.
+Then visit **http://localhost:8000**.
 
-The current website includes:
+You need Python 3 and an internet connection for live Pokédex data. No npm install or build step is required.
 
-- A curated catalogue of main-series and selected spin-off games, with official Pokémon and Nintendo links.
-- Region-inspired visual themes and grid/list catalogue layouts.
-- A curated directory of independent fan projects, linked to their project pages or developer threads.
-- A searchable National Pokédex, type filters, Pokémon detail cards and a daily Pokédex entry.
-- Official Pokémon mobile-app links.
-- A PC-release wishboard where visitors can add requests and vote locally in their own browser.
+## Navigate the app
 
-### Data and limits
+Use the fixed left navigation to switch between independent screens:
 
-- Pokédex names, species records, type data, stats and flavor text are loaded from [PokéAPI](https://pokeapi.co/docs/v2). API responses are cached in browser storage.
-- Pokémon sprites are loaded from the public [PokéAPI sprites repository](https://github.com/PokeAPI/sprites).
-- Official game, mobile-app and Nintendo links point to publisher-controlled catalogues or product pages. Store availability can differ by country and device.
-- The game catalogue is curated; it is not an exhaustive history of every regional release, edition or delisted product.
-- The fan-game directory is a curated selection, not a complete list. Fan projects are unofficial and can disappear or change. Poke-Switch does not host their game files, ROMs or downloads.
-- PC requests and votes use this browser's local storage only. They are not transmitted to Nintendo, uploaded to a server or counted as global community votes.
-- The website does not emulate games, provide game ROMs or distribute copyrighted assets.
+- **Discover** — featured Pokémon, daily field note and quick-launch cards.
+- **Game library** — curated main-series and spin-off catalogue.
+- **Pokédex** — search, type filters, artwork, statistics and species entries.
+- **Fan universe** — curated unofficial community projects.
+- **Mobile games** — official Pokémon mobile-app links.
+- **PC wishboard** — local requests and votes plus a message you can copy to Nintendo.
 
-### Checks
+The app changes screens without sending you down one long landing page. On smaller screens, use the menu button in the top bar.
+
+## Project structure
+
+```text
+Poke-Switch/
+├── index.html
+├── run-local.bat
+├── assets/
+│   ├── css/
+│   │   └── styles.css
+│   └── js/
+│       └── app.js
+├── data/
+│   └── catalogue.js
+├── tests/
+│   └── site.test.cjs
+└── .github/
+    └── workflows/
+        └── site.yml
+```
+
+## Data and artwork
+
+- Pokédex records, types, stats and descriptions come from [PokéAPI](https://pokeapi.co/docs/v2).
+- Pokémon illustrations use the available official-artwork files from the [PokéAPI sprites repository](https://github.com/PokeAPI/sprites). Images are displayed at their available source resolution, not artificially upscaled or claimed to be 4K.
+- Game and fan-project directories are curated selections, not exhaustive lists. Check publisher and creator links for current availability.
+- PC requests and votes stay in each visitor's browser. They are not sent to Nintendo and are not global vote totals.
+- Fan projects are unofficial. Poke-Switch does not host ROMs, game files or copyrighted downloads.
+
+## Development checks
 
 Use Node.js 22 or later:
 
 ```bash
-node --check app.js
+node --check assets/js/app.js
 node --test tests/site.test.cjs
 ```
 
-GitHub Actions runs the static checks for website changes.
+## Official links
 
-## AI-maintained project notes (secondary — 2026-11-14)
+- [Pokémon](https://www.pokemon.com/)
+- [Pokémon games](https://in.portal-pokemon.com/game/)
+- [Nintendo](https://www.nintendo.com/)
+- [PokéCommunity](https://www.pokecommunity.com/)
 
-This section supplements the maintainer-authored README above. The preceding README text is restored from the last fuller maintainer-authored version at commit `a581542257b171a6f9c9052788b572f87ac7d7a0`. It is preserved above rather than replaced by generated project notes.
+## Disclaimer
 
-- The current source tree, runtime data and tests are the implementation source of truth. Roadmap items, draft PRs and AI-generated descriptions are not shipped features by themselves.
-- Preserve real and maintainer-provided data. Never silently substitute generated or placeholder data. Clearly label and isolate synthetic fixtures.
-- Mark unverified sources, identifiers, metrics, benchmark results and external claims as unknown/unverified rather than guessing.
-- Verify setup, execution, tests and public claims against the exact current commit before using this repository in a job, research or academic application.
-- The current `index.html` references `styles.css` and `app.js`, but neither file is present in the `main` branch tree checked on 2026-11-14. The page's styling and interactive catalogue behaviour are therefore not verified as working. Do not describe it as a functioning emulator; the HTML itself describes a fan-made game catalogue and says no game files are hosted.
-- See [MODEL_AUDIT_ROUTER.md](MODEL_AUDIT_ROUTER.md) for independent model review instructions and the merge gate.
+Poke-Switch is an independent fan project and is not affiliated with, endorsed by or sponsored by Nintendo, GAME FREAK, Creatures Inc. or The Pokémon Company. Pokémon names, characters and artwork belong to their respective rights holders.
