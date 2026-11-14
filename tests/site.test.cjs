@@ -92,3 +92,25 @@ test("region themes are defined in JavaScript and CSS", () => {
     }
   }
 });
+
+test("the default theme is light with a red accent and rounded card styling", () => {
+  assert.match(css, /color-scheme:light/);
+  assert.match(css, /--accent:#df2938/);
+  assert.match(css, /\\.dex-card\\{[^}]*border-radius:25px/s);
+  assert.match(css, /\\.dex-art img\\{[^}]*width:174px/s);
+});
+
+test("Pokédex cards use named official artwork and accessible image loading", () => {
+  assert.match(app, /official-artwork/);
+  assert.match(app, /Official artwork of /);
+  assert.match(app, /decoding="async"/);
+  assert.match(app, /POKÉMON CARD/);
+});
+
+test("README explains the Windows launcher and manual local URL without AI notes", () => {
+  const readme = fs.readFileSync(path.join(root, "README.md"), "utf8");
+  assert.match(readme, /double-click `run-local\.bat`/);
+  assert.match(readme, /http:\/\/localhost:8000/);
+  assert.match(readme, /No npm install or build step is needed/);
+  assert.doesNotMatch(readme, /AI-maintained project notes|AI-generated/);
+});
