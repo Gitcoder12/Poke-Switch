@@ -66,6 +66,86 @@ function renderStoreBadges(game) {
   return badges.length ? '<div class="game-store-links" aria-label="Official platform directories">'+badges.join("")+'</div>' : "";
 }
 
+
+const GAME_ARTWORK_RULES = [
+  { pattern:/scarlet|violet/i, ids:[1007,1008], label:"Koraidon + Miraidon" },
+  { pattern:/legends\s*[:–-]?\s*z.?a|z.?a\b/i, ids:[718], label:"Zygarde" },
+  { pattern:/legends\s*[:–-]?\s*arceus|arceus|hisui/i, ids:[493], label:"Arceus" },
+  { pattern:/sword|shield|galar/i, ids:[888,889], label:"Zacian + Zamazenta" },
+  { pattern:/black|white|unova/i, ids:[643,644], label:"Reshiram + Zekrom" },
+  { pattern:/diamond|pearl|platinum|sinnoh/i, ids:[483,484], label:"Dialga + Palkia" },
+  { pattern:/ruby|sapphire|emerald|hoenn/i, ids:[383,382], label:"Groudon + Kyogre" },
+  { pattern:/gold|silver|crystal|johto/i, ids:[250,249], label:"Ho-Oh + Lugia" },
+  { pattern:/\bx\s*&\s*y\b|kalos/i, ids:[716,717], label:"Xerneas + Yveltal" },
+  { pattern:/sun|moon|alola/i, ids:[791,792], label:"Solgaleo + Lunala" },
+  { pattern:/red|blue|yellow|firered|leafgreen|let'?s go|kanto/i, ids:[150], label:"Mewtwo" },
+  { pattern:/classic|collection/i, ids:[25,6], label:"Classic favorites" },
+  { pattern:/pokopia/i, ids:[132], label:"Ditto" },
+  { pattern:/mystery dungeon/i, ids:[448], label:"Lucario" }
+];
+const REGION_ARTWORK = {
+  kanto:{ids:[150],label:"Mewtwo · Kanto"},
+  johto:{ids:[250,249],label:"Ho-Oh + Lugia · Johto"},
+  hoenn:{ids:[384],label:"Rayquaza · Hoenn"},
+  sinnoh:{ids:[483,484],label:"Dialga + Palkia · Sinnoh"},
+  unova:{ids:[643,644],label:"Reshiram + Zekrom · Unova"},
+  kalos:{ids:[716,717],label:"Xerneas + Yveltal · Kalos"},
+  alola:{ids:[791,792],label:"Solgaleo + Lunala · Alola"},
+  galar:{ids:[888,889],label:"Zacian + Zamazenta · Galar"},
+  paldea:{ids:[1007,1008],label:"Koraidon + Miraidon · Paldea"},
+  hisui:{ids:[493],label:"Arceus · Hisui"}
+};
+
+function resolveGameArtwork(title, region) {
+  const normalizedTitle=String(title||"");
+  const matched=GAME_ARTWORK_RULES.find(rule=>rule.pattern.test(normalizedTitle));
+  if(matched) return {ids:matched.ids,label:matched.label,source:"game"};
+  const regionKey=String(region||"").toLowerCase();
+  if(REGION_ARTWORK[regionKey]) return {...REGION_ARTWORK[regionKey],source:"region"};
+  return {ids:[25],label:"Pokémon mascot artwork",source:"mascot"};
+}
+function pokemonArtworkURL(id) {
+  return "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/"+id+".png";
+}
+function pokemonSpriteURL(id) {
+  return "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"+id+".png";
+}
+function renderPokemonArtwork(ids, label, imageClass) {
+  return ids.slice(0,2).map((id,index)=>
+    '<img class="'+imageClass+'" src="'+pokemonArtworkURL(id)+'" data-pokemon-art data-fallback="'+pokemonSpriteURL(id)+'" alt="'+escapeHTML(label)+' artwork '+(index+1)+'" loading="lazy" decoding="async">'
+  ).join("");
+}
+function bindPokemonArtworkFallbacks(root) {
+  if(!root) return;
+  root.querySelectorAll("[data-pokemon-art]").forEach(image=>{
+    image.addEventListener("error",()=>{
+      if(image.dataset.fallback && image.dataset.fallbackUsed!=="true") {
+        image.dataset.fallbackUsed="true";
+        image.src=image.dataset.fallback;
+        return;
+      }
+      const frame=image.closest("[data-artwork-frame]");
+      if(frame) frame.classList.add("artwork-unavailable");
+      image.remove();
+    });
+  });
+}
+function renderGameArtwork(game) {
+  const artwork=resolveGameArtwork(game.title,game.region);
+  return '<div class="game-card-art" data-artwork-frame aria-label="Featured Pokémon artwork">'+
+    '<div class="game-art-stack">'+renderPokemonArtwork(artwork.ids,artwork.label,"game-art-image")+'</div>'+
+    '<span class="game-art-label">'+escapeHTML(artwork.label)+'</span>'+
+    '<span class="game-art-source">POKÉAPI SPRITE ARCHIVE</span>'+
+  '</div>';
+}
+function renderWishArtwork(request) {
+  const artwork=resolveGameArtwork(request.title,"");
+  return '<div class="wish-artwork" data-artwork-frame aria-label="Representative Pokémon artwork">'+
+    '<div class="wish-art-stack">'+renderPokemonArtwork(artwork.ids,artwork.label,"wish-art-image")+'</div>'+
+    '<span class="wish-art-caption">'+escapeHTML(artwork.label)+'</span>'+
+  '</div>';
+}
+
 function renderGames() {
   const query=gameSearchTerm.trim().toLowerCase();
   const items=games.filter(game=>{
@@ -88,11 +168,16 @@ function renderGames() {
     const era=game.kind==="upcoming" ? "UPCOMING" : game.kind==="spin-off" ? "SPIN-OFF" : "GEN "+game.gen;
     const status=game.kind==="upcoming" ? "Announced" : "Official series";
     return '<article class="game-card">'+
-      '<div class="game-card-top"><span class="game-chip">'+era+'</span><span class="status-chip">'+status+'</span></div>'+
-      '<div class="game-card-heading"><h3>'+escapeHTML(game.title)+'</h3>'+renderStoreBadges(game)+'</div><p class="game-meta">'+escapeHTML(game.region)+' · '+escapeHTML(game.platform)+'</p>'+
-      '<div class="game-card-bottom"><span>'+escapeHTML(game.summary)+'</span>'+externalLink(POKEMON_GAME_HUB,"Official details")+'</div>'+
+      renderGameArtwork(game)+
+      '<div class="game-card-inner">'+
+        '<div class="game-card-top"><span class="game-chip">'+era+'</span><span class="status-chip">'+status+'</span></div>'+
+        '<div class="game-card-heading"><h3>'+escapeHTML(game.title)+'</h3>'+renderStoreBadges(game)+'</div>'+
+        '<p class="game-meta">'+escapeHTML(game.region)+' · '+escapeHTML(game.platform)+'</p>'+
+        '<div class="game-card-bottom"><span>'+escapeHTML(game.summary)+'</span>'+externalLink(POKEMON_GAME_HUB,"Official details")+'</div>'+
+      '</div>'+
     '</article>';
   }).join("");
+  bindPokemonArtworkFallbacks(grid);
 }
 
 function initGames() {
@@ -406,15 +491,23 @@ function saveRequests() {
 }
 function renderRequests() {
   const list=$("#request-list");
-  const sorted=requests.slice().sort((a,b)=>b.votes-a.votes || a.title.localeCompare(b.title));
+  const sorted=requests.slice().sort((a,b)=>(Number(b.votes)||0)-(Number(a.votes)||0) || String(a.title||"").localeCompare(String(b.title||"")));
   if (!sorted.length) {
     list.innerHTML='<div class="empty-state">No requests yet. Add the first PC release wish.</div>';
     return;
   }
   list.innerHTML=sorted.map(request=>{
     const voted=votedRequests.has(request.id);
-    return '<div class="request-item"><button class="vote-button '+(voted?"voted":"")+'" type="button" data-vote="'+escapeHTML(request.id)+'" aria-label="'+(voted?"Remove your vote":"Vote for")+' '+escapeHTML(request.title)+'" aria-pressed="'+voted+'">'+(voted?"✓":"↑")+'</button><span class="request-title">'+escapeHTML(request.title)+'</span><span class="request-votes">'+request.votes+' local vote'+(request.votes===1?"":"s")+'</span></div>';
+    const votes=Math.max(0,Number(request.votes)||0);
+    return '<article class="request-item">'+
+      renderWishArtwork(request)+
+      '<div class="wish-copy"><span class="wish-copy-kicker">PC RELEASE WISH</span>'+
+      '<span class="request-title">'+escapeHTML(request.title)+'</span>'+
+      '<span class="request-votes">'+votes+' local vote'+(votes===1?"":"s")+'</span></div>'+
+      '<button class="vote-button '+(voted?"voted":"")+'" type="button" data-vote="'+escapeHTML(request.id)+'" aria-label="'+(voted?"Remove your vote":"Vote for")+' '+escapeHTML(request.title)+'" aria-pressed="'+voted+'">'+(voted?"✓":"↑")+'</button>'+
+    '</article>';
   }).join("");
+  bindPokemonArtworkFallbacks(list);
   list.querySelectorAll("[data-vote]").forEach(button=>button.addEventListener("click",()=>toggleVote(button.dataset.vote)));
 }
 function toggleVote(id) {
@@ -422,10 +515,10 @@ function toggleVote(id) {
   if (!request) return;
   if (votedRequests.has(id)) {
     votedRequests.delete(id);
-    request.votes=Math.max(0,request.votes-1);
+    request.votes=Math.max(0,(Number(request.votes)||0)-1);
   } else {
     votedRequests.add(id);
-    request.votes+=1;
+    request.votes=(Number(request.votes)||0)+1;
   }
   saveRequests();
   renderRequests();
@@ -436,7 +529,7 @@ function initRequests() {
     event.preventDefault();
     const input=$("#request-title");
     const title=input.value.trim();
-    if (title.length<3) {showToast("Enter a game title first.");return;}
+    if (title.length<3 || title.length>90 || /[\u0000-\u001f\u007f]/.test(title)) {showToast("Use a game title between 3 and 90 characters.");return;}
     const existing=requests.find(item=>item.title.toLowerCase()===title.toLowerCase());
     if (existing) {showToast("That request is already on your wishboard.");input.value="";return;}
     requests.push({id:"wish-"+Date.now().toString(36),title,votes:0});
