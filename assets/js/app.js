@@ -411,22 +411,81 @@ function initRequests() {
   });
 }
 
+const VIEW_META = {
+  discover:{title:"Discover",kicker:"FIELD GUIDE"},
+  games:{title:"Game library",kicker:"OFFICIAL GAME ARCHIVE"},
+  pokedex:{title:"Pokédex",kicker:"NATIONAL DEX"},
+  "fan-games":{title:"Fan universe",kicker:"COMMUNITY PROJECTS"},
+  mobile:{title:"Mobile games",kicker:"POKÉMON ON THE GO"},
+  requests:{title:"PC wishboard",kicker:"COMMUNITY REQUESTS"}
+};
+
+function showView(name, updateHistory=false) {
+  const viewName=Object.prototype.hasOwnProperty.call(VIEW_META,name)?name:"discover";
+  $(".app-view").forEach(view=>{
+    const active=view.dataset.view===viewName;
+    view.hidden=!active;
+    view.classList.toggle("is-active",active);
+  });
+  $(".side-link[data-view-target]").forEach(link=>{
+    const active=link.dataset.viewTarget===viewName;
+    link.classList.toggle("active",active);
+    if(active) link.setAttribute("aria-current","page");
+    else link.removeAttribute("aria-current");
+  });
+  const meta=VIEW_META[viewName];
+  $("#page-heading").textContent=meta.title;
+  $("#page-kicker").textContent=meta.kicker;
+  document.title="Poke-Switch — "+meta.title;
+  document.body.dataset.currentView=viewName;
+  const activeView=$('.app-view[data-view="'+viewName+'"]');
+  if(activeView) activeView.scrollTop=0;
+  const main=$("#app-main");
+  if(main) main.scrollTop=0;
+  if(updateHistory) history.pushState({view:viewName},"","#"+viewName);
+}
+
+function closeMobileNavigation() {
+  const sidebar=$("#app-sidebar"),toggle=$("#menu-toggle"),scrim=$("#app-mobile-scrim");
+  sidebar.classList.remove("open");
+  scrim.classList.remove("show");
+  toggle.setAttribute("aria-expanded","false");
+  toggle.setAttribute("aria-label","Open navigation");
+  toggle.textContent="☰";
+}
+
 function initNavigation() {
-  const toggle=$("#menu-toggle"),nav=$(".main-nav");
+  const toggle=$("#menu-toggle"),sidebar=$("#app-sidebar"),scrim=$("#app-mobile-scrim");
+  document.addEventListener("click",event=>{
+    const link=event.target.closest("[data-view-target]");
+    if(!link) return;
+    if(event.button!==0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    event.preventDefault();
+    showView(link.dataset.viewTarget,true);
+    closeMobileNavigation();
+  });
   toggle.addEventListener("click",()=>{
-    const open=nav.classList.toggle("open");
+    const open=!sidebar.classList.contains("open");
+    sidebar.classList.toggle("open",open);
+    scrim.classList.toggle("show",open);
     toggle.setAttribute("aria-expanded",String(open));
+    toggle.setAttribute("aria-label",open?"Close navigation":"Open navigation");
     toggle.textContent=open?"×":"☰";
   });
-  nav.querySelectorAll("a").forEach(link=>link.addEventListener("click",()=>{
-    nav.classList.remove("open");
-    toggle.setAttribute("aria-expanded","false");
-    toggle.textContent="☰";
-  }));
+  scrim.addEventListener("click",closeMobileNavigation);
+  window.addEventListener("popstate",()=>{
+    showView(location.hash.slice(1)||"discover",false);
+    closeMobileNavigation();
+  });
+  const initial=location.hash.slice(1);
+  showView(initial||"discover",false);
   document.addEventListener("keydown",event=>{
-    if (event.key==="/" && !["INPUT","TEXTAREA","SELECT"].includes(document.activeElement.tagName)) {
+    if(event.key==="Escape") closeMobileNavigation();
+    if(event.key==="/" && !["INPUT","TEXTAREA","SELECT"].includes(document.activeElement.tagName)) {
       event.preventDefault();
-      $("#game-search").focus();
+      const current=document.body.dataset.currentView;
+      const target=current==="pokedex"?"#dex-search":current==="games"?"#game-search":null;
+      if(target) $(target).focus();
     }
   });
 }
