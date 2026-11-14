@@ -422,12 +422,12 @@ const VIEW_META = {
 
 function showView(name, updateHistory=false) {
   const viewName=Object.prototype.hasOwnProperty.call(VIEW_META,name)?name:"discover";
-  $(".app-view").forEach(view=>{
+  $$(".app-view").forEach(view=>{
     const active=view.dataset.view===viewName;
     view.hidden=!active;
     view.classList.toggle("is-active",active);
   });
-  $(".side-link[data-view-target]").forEach(link=>{
+  $$(".side-link[data-view-target]").forEach(link=>{
     const active=link.dataset.viewTarget===viewName;
     link.classList.toggle("active",active);
     if(active) link.setAttribute("aria-current","page");
