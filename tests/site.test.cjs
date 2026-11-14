@@ -114,3 +114,25 @@ test("README explains the Windows launcher and manual local URL without AI notes
   assert.match(readme, /No npm install or build step is needed/);
   assert.doesNotMatch(readme, /AI-maintained project notes|AI-generated/);
 });
+
+
+test("the app has six independent route views and a persistent navigation shell", () => {
+  const routes = ["discover", "games", "pokedex", "fan-games", "mobile", "requests"];
+  for (const route of routes) {
+    assert.match(html, new RegExp('data-view="' + route + '"'));
+    assert.match(html, new RegExp('data-view-target="' + route + '"'));
+    assert.match(app, new RegExp(route.replace("-", "\\\\-") + '.*title:'));
+  }
+  assert.match(html, /class="app-sidebar"/);
+  assert.match(html, /class="app-topbar"/);
+  assert.match(html, /class="app-main"/);
+  assert.match(css, /body\\{[^}]*height:100vh[^}]*overflow:hidden/s);
+  assert.match(css, /\\.app-view\\[hidden\\]\\{display:none!important\\}/);
+});
+
+test("navigation changes views rather than scrolling to page anchors", () => {
+  assert.match(app, /function showView\\(/);
+  assert.match(app, /history\\.pushState/);
+  assert.match(app, /data-view-target/);
+  assert.match(css, /\\.app-view\\{height:100%;[^}]*overflow-y:auto/s);
+});
