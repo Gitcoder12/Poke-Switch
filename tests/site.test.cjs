@@ -179,3 +179,18 @@ test("the interface does not include decorative emoji glyphs", () => {
     assert.doesNotMatch(source, /[⚡✳✉⚔☕☺]/u, label + " should use type and CSS accents instead");
   }
 });
+
+
+test("all app screens remain inside one shared main landmark", () => {
+  const mainOpen = [...html.matchAll(/<main\\b/g)];
+  const mainClose = [...html.matchAll(/<\\/main>/g)];
+  assert.equal(mainOpen.length, 1, "The document must have one main landmark");
+  assert.equal(mainClose.length, 1, "The main landmark must close exactly once");
+  const mainStart = mainOpen[0].index;
+  const mainEnd = mainClose[0].index;
+  const viewStarts = [...html.matchAll(/<section class="app-view/g)].map(match => match.index);
+  assert.equal(viewStarts.length, 7, "All seven app views must exist");
+  for (const start of viewStarts) {
+    assert.ok(start > mainStart && start < mainEnd, "Every app view must stay inside the shared main landmark");
+  }
+});
