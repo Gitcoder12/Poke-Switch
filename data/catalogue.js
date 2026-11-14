@@ -55,7 +55,7 @@ window.PokeSwitchData = Object.freeze({
   {title:"Pokémon Friends",gen:"spin-off",kind:"spin-off",region:"Puzzle world",platform:"Nintendo Switch / Mobile",summary:"A puzzle adventure with collectible plush Pokémon."},
   {title:"Pokémon Trading Card Game",gen:"spin-off",kind:"spin-off",region:"Card game",platform:"Game Boy",summary:"The classic digital Pokémon trading-card game."},
   {title:"Pokémon Trading Card Game Pocket",gen:"spin-off",kind:"spin-off",region:"Card game",platform:"Mobile",summary:"Collect digital Pokémon cards on mobile."}
-];
+],
 
   fanProjects: [
   {name:"Pokémon Reborn",kind:"story",type:"Story adventure",platform:"Windows · macOS · Linux",desc:"A long-form story adventure known for its field-effect battle system.",url:"https://www.rebornevo.com/",label:"Developer community"},
@@ -72,7 +72,7 @@ window.PokeSwitchData = Object.freeze({
   {name:"Pokémon Unbound",kind:"romhack",type:"ROM hack",platform:"GBA emulator · your own game copy",desc:"A FireRed ROM hack. Requires an original game file you have the legal right to use; this site does not link to ROMs.",url:"https://www.pokecommunity.com/threads/pok%C3%A9mon-unbound-completed.382178/",label:"Creator thread"},
   {name:"Pokémon 3D",kind:"3d",type:"3D adventure",platform:"PC",desc:"A fan-made 3D take on the Johto-era world.",url:"https://pokemon3d.net/",label:"Project website"},
   {name:"Pokémon MMO 3D",kind:"3d",type:"3D online battles",platform:"Windows · Linux",desc:"A fan-made 3D project focused on real-time Pokémon battles.",url:"https://pokemon-mmo-3d.com/en",label:"Project website"}
-];
+],
 
   mobileApps: [
   {name:"Pokémon GO",category:"Location-based adventure",platform:"Android · iOS",url:"https://in.portal-pokemon.com/apps/",symbol:"⌖",note:"Official Pokémon India app directory"},
