@@ -39,13 +39,15 @@ Poke-Switch does not distribute unauthorized game files or copyrighted assets. U
 
 ## Current website
 
-Run the site locally from the repository root:
+On Windows, double-click `run-local.bat` in the repository folder. It starts the local server and opens the site in your browser. Keep the server window open while you use the website.
+
+Or run the server manually from the repository root:
 
 ```bash
 python -m http.server 8000
 ```
 
-Open [http://localhost:8000](http://localhost:8000). The site is static HTML, CSS and JavaScript; no build step or backend is required.
+Then open [http://localhost:8000](http://localhost:8000). The site is static HTML, CSS and JavaScript; no npm install or build step is required.
 
 The current website includes:
 
@@ -61,6 +63,7 @@ The current website includes:
 ```text
 Poke-Switch/
 ├── index.html
+├── run-local.bat
 ├── assets/
 │   ├── css/
 │   │   └── styles.css
