@@ -133,7 +133,7 @@ function renderMobileApps() {
 function applyTheme(theme) {
   if (!themes.includes(theme)) theme="league";
   document.body.dataset.theme=theme;
-  safeStorage.set("poke-switch:theme",theme);
+  safeStorage.set("poke-switch:theme:v2",theme);
   $$("[data-theme-choice]").forEach(button=>button.classList.toggle("active",button.dataset.themeChoice===theme));
   $$(".theme-choice").forEach(button=>button.classList.toggle("active",button.dataset.themeChoice===theme));
 }
@@ -142,7 +142,7 @@ function initThemes() {
   themeGrid.innerHTML=themes.map(theme=>
     '<button class="theme-choice" data-theme-choice="'+theme+'" type="button"><i class="theme-dot dot-'+theme+'"></i>'+escapeHTML(themeLabels[theme])+'</button>'
   ).join("");
-  const stored=safeStorage.get("poke-switch:theme","league");
+  const stored=safeStorage.get("poke-switch:theme:v2","league");
   applyTheme(stored);
   $("#theme-options").addEventListener("click",event=>{
     const button=event.target.closest("[data-theme-choice]");
