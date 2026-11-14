@@ -11,92 +11,11 @@ const themeLabels = {
   unova:"Unova",kalos:"Kalos",alola:"Alola",galar:"Galar",paldea:"Paldea"
 };
 
-const games = [
-  {title:"Pokémon Red & Blue",gen:1,kind:"main",region:"Kanto",platform:"Game Boy",summary:"The original journey that began the worldwide adventure."},
-  {title:"Pokémon Yellow",gen:1,kind:"main",region:"Kanto",platform:"Game Boy",summary:"A Pikachu-led take on the classic Kanto adventure."},
-  {title:"Pokémon Gold & Silver",gen:2,kind:"main",region:"Johto",platform:"Game Boy Color",summary:"Explore Johto, then return to Kanto."},
-  {title:"Pokémon Crystal",gen:2,kind:"main",region:"Johto",platform:"Game Boy Color",summary:"The enhanced Johto edition."},
-  {title:"Pokémon Ruby & Sapphire",gen:3,kind:"main",region:"Hoenn",platform:"Game Boy Advance",summary:"A new region, weather and legendary rivalries."},
-  {title:"Pokémon Emerald",gen:3,kind:"main",region:"Hoenn",platform:"Game Boy Advance",summary:"The expanded Hoenn adventure."},
-  {title:"Pokémon FireRed & LeafGreen",gen:3,kind:"main",region:"Kanto",platform:"Game Boy Advance",summary:"Kanto returns with a refreshed classic journey."},
-  {title:"Pokémon Diamond & Pearl",gen:4,kind:"main",region:"Sinnoh",platform:"Nintendo DS",summary:"A new generation of discoveries in Sinnoh."},
-  {title:"Pokémon Platinum",gen:4,kind:"main",region:"Sinnoh",platform:"Nintendo DS",summary:"The enhanced Sinnoh adventure."},
-  {title:"Pokémon HeartGold & SoulSilver",gen:4,kind:"main",region:"Johto",platform:"Nintendo DS",summary:"Johto returns with two regions to explore."},
-  {title:"Pokémon Black & White",gen:5,kind:"main",region:"Unova",platform:"Nintendo DS",summary:"A fresh Pokédex and a story set in Unova."},
-  {title:"Pokémon Black 2 & White 2",gen:5,kind:"main",region:"Unova",platform:"Nintendo DS",summary:"Return to Unova in a direct sequel."},
-  {title:"Pokémon X & Y",gen:6,kind:"main",region:"Kalos",platform:"Nintendo 3DS",summary:"A 3D journey through the Kalos region."},
-  {title:"Pokémon Omega Ruby & Alpha Sapphire",gen:6,kind:"main",region:"Hoenn",platform:"Nintendo 3DS",summary:"Hoenn remade with new Mega Evolution stories."},
-  {title:"Pokémon Sun & Moon",gen:7,kind:"main",region:"Alola",platform:"Nintendo 3DS",summary:"Island challenges and new regional forms."},
-  {title:"Pokémon Ultra Sun & Ultra Moon",gen:7,kind:"main",region:"Alola",platform:"Nintendo 3DS",summary:"An expanded Alola story."},
-  {title:"Pokémon: Let's Go, Pikachu!",gen:7,kind:"main",region:"Kanto",platform:"Nintendo Switch",summary:"A welcoming Kanto adventure with partner Pikachu."},
-  {title:"Pokémon: Let's Go, Eevee!",gen:7,kind:"main",region:"Kanto",platform:"Nintendo Switch",summary:"A welcoming Kanto adventure with partner Eevee."},
-  {title:"Pokémon Sword & Shield",gen:8,kind:"main",region:"Galar",platform:"Nintendo Switch",summary:"Explore Galar and discover Dynamax battles."},
-  {title:"Pokémon Brilliant Diamond & Shining Pearl",gen:8,kind:"main",region:"Sinnoh",platform:"Nintendo Switch",summary:"Sinnoh remakes inspired by the original DS games."},
-  {title:"Pokémon Legends: Arceus",gen:8,kind:"main",region:"Hisui",platform:"Nintendo Switch",summary:"Explore ancient Hisui and uncover the first Pokédex."},
-  {title:"Pokémon Scarlet & Violet",gen:9,kind:"main",region:"Paldea",platform:"Nintendo Switch",summary:"An open-world journey through Paldea."},
-  {title:"Pokémon Legends: Z-A",gen:9,kind:"main",region:"Kalos",platform:"Nintendo Switch / Switch 2",summary:"A new adventure set in Lumiose City."},
-  {title:"Pokémon FireRed & LeafGreen (Switch)",gen:1,kind:"main",region:"Kanto",platform:"Nintendo Switch",summary:"Classic Kanto adventures listed for Nintendo Switch in 2026."},
-  {title:"Pokémon Winds & Waves",gen:"upcoming",kind:"upcoming",region:"New region",platform:"Nintendo Switch 2",summary:"Announced main-series adventures planned for 2027."},
-  {title:"Pokémon Pokopia",gen:"spin-off",kind:"spin-off",region:"New setting",platform:"Nintendo Switch 2",summary:"A Pokémon life-simulation adventure."},
-  {title:"Pokémon Stadium",gen:"spin-off",kind:"spin-off",region:"Kanto / Johto",platform:"Nintendo 64",summary:"Classic 3D Pokémon battles."},
-  {title:"Pokémon Stadium 2",gen:"spin-off",kind:"spin-off",region:"Johto",platform:"Nintendo 64",summary:"More 3D battles and minigames."},
-  {title:"Pokémon Snap",gen:"spin-off",kind:"spin-off",region:"Islands",platform:"Nintendo 64",summary:"Photograph Pokémon in their natural habitats."},
-  {title:"New Pokémon Snap",gen:"spin-off",kind:"spin-off",region:"Lental",platform:"Nintendo Switch",summary:"A modern photography expedition."},
-  {title:"Pokémon Colosseum",gen:"spin-off",kind:"spin-off",region:"Orre",platform:"Nintendo GameCube",summary:"A story-driven 3D RPG with double battles."},
-  {title:"Pokémon XD: Gale of Darkness",gen:"spin-off",kind:"spin-off",region:"Orre",platform:"Nintendo GameCube",summary:"A second Orre adventure centred on Shadow Pokémon."},
-  {title:"Pokémon Mystery Dungeon: Red & Blue Rescue Team",gen:"spin-off",kind:"spin-off",region:"Pokémon world",platform:"Game Boy Advance / DS",summary:"Wake up as a Pokémon and form a rescue team."},
-  {title:"Pokémon Mystery Dungeon: Explorers of Time & Darkness",gen:"spin-off",kind:"spin-off",region:"Pokémon world",platform:"Nintendo DS",summary:"Explore dungeons and a time-bending mystery."},
-  {title:"Pokémon Mystery Dungeon: Explorers of Sky",gen:"spin-off",kind:"spin-off",region:"Pokémon world",platform:"Nintendo DS",summary:"The expanded Explorers adventure."},
-  {title:"Pokémon Mystery Dungeon: Gates to Infinity",gen:"spin-off",kind:"spin-off",region:"Pokémon world",platform:"Nintendo 3DS",summary:"A 3D dungeon-crawling adventure."},
-  {title:"Pokémon Super Mystery Dungeon",gen:"spin-off",kind:"spin-off",region:"Pokémon world",platform:"Nintendo 3DS",summary:"A large-scale Mystery Dungeon journey."},
-  {title:"Pokémon Mystery Dungeon: Rescue Team DX",gen:"spin-off",kind:"spin-off",region:"Pokémon world",platform:"Nintendo Switch",summary:"A modern remake of the original rescue-team games."},
-  {title:"Pokémon Ranger",gen:"spin-off",kind:"spin-off",region:"Fiore",platform:"Nintendo DS",summary:"Help Pokémon and people as a Ranger."},
-  {title:"Pokémon Ranger: Shadows of Almia",gen:"spin-off",kind:"spin-off",region:"Almia",platform:"Nintendo DS",summary:"A second Ranger adventure."},
-  {title:"Pokémon Ranger: Guardian Signs",gen:"spin-off",kind:"spin-off",region:"Oblivia",platform:"Nintendo DS",summary:"Protect the Oblivia region."},
-  {title:"Pokémon Conquest",gen:"spin-off",kind:"spin-off",region:"Ransei",platform:"Nintendo DS",summary:"A tactical strategy crossover adventure."},
-  {title:"Pokkén Tournament DX",gen:"spin-off",kind:"spin-off",region:"Battle arena",platform:"Nintendo Switch",summary:"Real-time Pokémon fighting action."},
-  {title:"Detective Pikachu Returns",gen:"spin-off",kind:"spin-off",region:"Ryme City",platform:"Nintendo Switch",summary:"Investigate mysteries with a talking Pikachu."},
-  {title:"Pokémon Battle Revolution",gen:"spin-off",kind:"spin-off",region:"Battle arena",platform:"Wii",summary:"Console-based 3D Pokémon battles."},
-  {title:"Pokémon Quest",gen:"spin-off",kind:"spin-off",region:"Tumblecube Island",platform:"Nintendo Switch / Mobile",summary:"A blocky island expedition."},
-  {title:"Pokémon Café ReMix",gen:"spin-off",kind:"spin-off",region:"Café",platform:"Nintendo Switch / Mobile",summary:"A puzzle café staffed by Pokémon."},
-  {title:"Pokémon UNITE",gen:"spin-off",kind:"spin-off",region:"Aeos Island",platform:"Nintendo Switch / Mobile",summary:"A team-based strategic battle arena."},
-  {title:"Pokémon Champions",gen:"spin-off",kind:"spin-off",region:"Battle arena",platform:"Nintendo Switch / Mobile",summary:"A battle-focused Pokémon experience with cross-platform play."},
-  {title:"Pokémon Friends",gen:"spin-off",kind:"spin-off",region:"Puzzle world",platform:"Nintendo Switch / Mobile",summary:"A puzzle adventure with collectible plush Pokémon."},
-  {title:"Pokémon Trading Card Game",gen:"spin-off",kind:"spin-off",region:"Card game",platform:"Game Boy",summary:"The classic digital Pokémon trading-card game."},
-  {title:"Pokémon Trading Card Game Pocket",gen:"spin-off",kind:"spin-off",region:"Card game",platform:"Mobile",summary:"Collect digital Pokémon cards on mobile."}
-];
-
-const fanProjects = [
-  {name:"Pokémon Reborn",kind:"story",type:"Story adventure",platform:"Windows · macOS · Linux",desc:"A long-form story adventure known for its field-effect battle system.",url:"https://www.rebornevo.com/",label:"Developer community"},
-  {name:"Pokémon Rejuvenation",kind:"story",type:"Story adventure",platform:"PC",desc:"A story-heavy fan project set in the Aevium region; its developers describe it as in development.",url:"https://rejuvenationgame.com/",label:"Developer website"},
-  {name:"Pokémon Insurgence",kind:"story",type:"Story adventure",platform:"Windows · Mac guide",desc:"A Torren-region fan game with Delta Pokémon, challenge modes and secret bases.",url:"https://www.p-insurgence.com/",label:"Project website"},
-  {name:"Pokémon Infinite Fusion",kind:"story",type:"Fusion adventure",platform:"Windows",desc:"An RPG Maker fan project built around combining two Pokémon. Use the developer thread for project information.",url:"https://www.pokecommunity.com/threads/v6-7-pok%C3%A9mon-infinite-fusion-new-pok%C3%A9mon-character-customization-and-more.347883/",label:"Developer thread"},
-  {name:"Pokémon Showdown",kind:"browser",type:"Battle simulator",platform:"Browser · Desktop apps",desc:"Build teams, practise competitive formats and battle in a browser.",url:"https://pokemonshowdown.com/",label:"Open battle simulator"},
-  {name:"PokéRogue",kind:"browser",type:"Browser roguelite",platform:"Browser",desc:"A run-based roguelite fan game with procedurally varied battles.",url:"https://pokerogue.net/",label:"Play in browser"},
-  {name:"PokéClicker",kind:"browser",type:"Idle browser game",platform:"Browser · Desktop client",desc:"An incremental adventure where progress continues as you catch and train Pokémon.",url:"https://www.pokeclicker.com/",label:"Play in browser"},
-  {name:"Pokémon Vortex",kind:"browser",type:"Browser RPG",platform:"Browser",desc:"An online browser RPG with maps, collecting and battles.",url:"https://www.pokemon-vortex.com/",label:"Open project"},
-  {name:"PokeMMO",kind:"mmo",type:"Online MMO",platform:"Windows · macOS · Linux · Mobile",desc:"An online fan MMO that uses original game files you must have the legal right to use. It does not supply those files.",url:"https://pokemmo.com/en/",label:"Project website"},
-  {name:"Pokémon Blaze Online",kind:"mmo",type:"Online MMO",platform:"Browser · PC · Android",desc:"An online fan project with browser and downloadable clients.",url:"https://www.pokemonblazeonline.com/",label:"Project website"},
-  {name:"Pokémon Revolution Online",kind:"mmo",type:"Online MMO",platform:"Windows · macOS · Linux · Android",desc:"A free-to-play fan MMO with its own community and events.",url:"https://pokemonrevolution.net/en/home",label:"Project website"},
-  {name:"Pokémon Unbound",kind:"romhack",type:"ROM hack",platform:"GBA emulator · your own game copy",desc:"A FireRed ROM hack. Requires an original game file you have the legal right to use; this site does not link to ROMs.",url:"https://www.pokecommunity.com/threads/pok%C3%A9mon-unbound-completed.382178/",label:"Creator thread"},
-  {name:"Pokémon 3D",kind:"3d",type:"3D adventure",platform:"PC",desc:"A fan-made 3D take on the Johto-era world.",url:"https://pokemon3d.net/",label:"Project website"},
-  {name:"Pokémon MMO 3D",kind:"3d",type:"3D online battles",platform:"Windows · Linux",desc:"A fan-made 3D project focused on real-time Pokémon battles.",url:"https://pokemon-mmo-3d.com/en",label:"Project website"}
-];
-
-const mobileApps = [
-  {name:"Pokémon GO",category:"Location-based adventure",platform:"Android · iOS",url:"https://in.portal-pokemon.com/apps/",symbol:"⌖",note:"Official Pokémon India app directory"},
-  {name:"Pokémon Trading Card Game Pocket",category:"Digital card collecting",platform:"Android · iOS",url:"https://tcgpocket.pokemon.com/en-us/",symbol:"▤",note:"Official app website"},
-  {name:"Pokémon Sleep",category:"Sleep-tracking game",platform:"Android · iOS",url:"https://www.pokemonsleep.net/en/",symbol:"☾",note:"Official app website"},
-  {name:"Pokémon UNITE",category:"Team strategy battles",platform:"Android · iOS · Nintendo Switch",url:"https://unite.pokemon.com/en-us/",symbol:"✦",note:"Official game website"},
-  {name:"Pokémon Champions",category:"Competitive battles",platform:"Android · iOS · Nintendo Switch",url:"https://champions.pokemon.com/en-us/",symbol:"⚔",note:"Official game website"},
-  {name:"Pokémon Friends",category:"Puzzle adventure",platform:"Android · iOS · Nintendo Switch",url:"https://www.pokemon-friends.jp/en/?region=GB",symbol:"✿",note:"Official game website"},
-  {name:"Pokémon Masters EX",category:"Trainer battles",platform:"Android · iOS",url:"https://pokemonmasters-game.com/en-US",symbol:"♜",note:"Official game website"},
-  {name:"Pokémon Café ReMix",category:"Puzzle café",platform:"Android · iOS · Nintendo Switch",url:"https://in.portal-pokemon.com/apps/",symbol:"☕",note:"Official Pokémon India app directory"},
-  {name:"Pokémon HOME",category:"Pokémon storage service",platform:"Android · iOS · Nintendo Switch",url:"https://home.pokemon.com/en-us/",symbol:"⌂",note:"Official Pokémon HOME website"},
-  {name:"Pokémon Quest",category:"Island adventure",platform:"Android · iOS · Nintendo Switch",url:"https://in.portal-pokemon.com/apps/",symbol:"◇",note:"Official Pokémon India app directory"},
-  {name:"Pokémon Smile",category:"Brushing companion",platform:"Android · iOS",url:"https://in.portal-pokemon.com/apps/",symbol:"☺",note:"Official Pokémon India app directory"},
-  {name:"Pokémon: Magikarp Jump",category:"Casual training game",platform:"Android · iOS",url:"https://in.portal-pokemon.com/apps/",symbol:"≈",note:"Official Pokémon India app directory"}
-];
+const { games, fanProjects, mobileApps } = window.PokeSwitchData || {
+  games: [],
+  fanProjects: [],
+  mobileApps: []
+};
 
 const $ = (selector, root=document) => root.querySelector(selector);
 const $$ = (selector, root=document) => Array.from(root.querySelectorAll(selector));

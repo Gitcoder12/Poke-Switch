@@ -56,6 +56,25 @@ The current website includes:
 - Official Pokémon mobile-app links.
 - A PC-release wishboard where visitors can add requests and vote locally in their own browser.
 
+### File layout
+
+```text
+Poke-Switch/
+├── index.html
+├── assets/
+│   ├── css/
+│   │   └── styles.css
+│   └── js/
+│       └── app.js
+├── data/
+│   └── catalogue.js
+├── tests/
+│   └── site.test.cjs
+└── .github/
+    └── workflows/
+        └── site.yml
+```
+
 ### Data and limits
 
 - Pokédex names, species records, type data, stats and flavor text are loaded from [PokéAPI](https://pokeapi.co/docs/v2). API responses are cached in browser storage.
@@ -71,7 +90,7 @@ The current website includes:
 Use Node.js 22 or later:
 
 ```bash
-node --check app.js
+node --check assets/js/app.js
 node --test tests/site.test.cjs
 ```
 
@@ -85,5 +104,5 @@ This section supplements the maintainer-authored README above. The preceding REA
 - Preserve real and maintainer-provided data. Never silently substitute generated or placeholder data. Clearly label and isolate synthetic fixtures.
 - Mark unverified sources, identifiers, metrics, benchmark results and external claims as unknown/unverified rather than guessing.
 - Verify setup, execution, tests and public claims against the exact current commit before using this repository in a job, research or academic application.
-- The current `index.html` references `styles.css` and `app.js`, but neither file is present in the `main` branch tree checked on 2026-11-14. The page's styling and interactive catalogue behaviour are therefore not verified as working. Do not describe it as a functioning emulator; the HTML itself describes a fan-made game catalogue and says no game files are hosted.
+- The website keeps presentation, application logic and curated directory data in separate locations: `assets/css/styles.css`, `assets/js/app.js` and `data/catalogue.js`. The site is a discovery guide, not an emulator; no game files are hosted.
 - See [MODEL_AUDIT_ROUTER.md](MODEL_AUDIT_ROUTER.md) for independent model review instructions and the merge gate.

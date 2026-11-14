@@ -5,8 +5,9 @@ on:
     branches: [main]
     paths:
       - "index.html"
-      - "styles.css"
-      - "app.js"
+      - "assets/css/styles.css"
+      - "assets/js/app.js"
+      - "data/catalogue.js"
       - "README.md"
       - "tests/**"
       - ".github/workflows/site.yml"
@@ -28,6 +29,6 @@ jobs:
         with:
           node-version: 22
       - name: Check JavaScript syntax
-        run: node --check app.js
+        run: node --check assets/js/app.js
       - name: Run site smoke tests
         run: node --test tests/site.test.cjs

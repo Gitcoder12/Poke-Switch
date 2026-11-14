@@ -7,14 +7,17 @@ const path = require("node:path");
 
 const root = path.resolve(__dirname, "..");
 const html = fs.readFileSync(path.join(root, "index.html"), "utf8");
-const app = fs.readFileSync(path.join(root, "app.js"), "utf8");
-const css = fs.readFileSync(path.join(root, "styles.css"), "utf8");
+const app = fs.readFileSync(path.join(root, "assets", "js", "app.js"), "utf8");
+const css = fs.readFileSync(path.join(root, "assets", "css", "styles.css"), "utf8");
+const catalogue = fs.readFileSync(path.join(root, "data", "catalogue.js"), "utf8");
 
-test("the page loads its local stylesheet and application script", () => {
-  assert.match(html, /href="styles\.css"/);
-  assert.match(html, /src="app\.js"/);
-  assert.ok(fs.existsSync(path.join(root, "styles.css")));
-  assert.ok(fs.existsSync(path.join(root, "app.js")));
+test("the page loads local styles, catalogue data and application code", () => {
+  assert.match(html, /href="assets\/css\/styles\.css"/);
+  assert.match(html, /src="data\/catalogue\.js"/);
+  assert.match(html, /src="assets\/js\/app\.js"/);
+  assert.ok(fs.existsSync(path.join(root, "assets", "css", "styles.css")));
+  assert.ok(fs.existsSync(path.join(root, "assets", "js", "app.js")));
+  assert.ok(fs.existsSync(path.join(root, "data", "catalogue.js")));
 });
 
 test("every in-page navigation link has a matching target", () => {
@@ -27,18 +30,25 @@ test("every in-page navigation link has a matching target", () => {
   }
 });
 
-test("all requested product areas are present", () => {
+test("all requested product areas and application hooks are present", () => {
   for (const id of ["games", "fan-games", "pokedex", "mobile", "requests"]) {
     assert.ok(html.includes('id="' + id + '"'), "Missing section: " + id);
   }
   for (const feature of [
     "pokemon-species", "pokemon-species/", "type/",
     "localStorage", "poke-switch:requests", "poke-switch:voted",
-    "data-theme-choice"
+    "data-theme-choice", "PokeSwitchData"
   ]) {
-    assert.ok(app.includes(feature), "Missing feature hook: " + feature);
+    assert.ok(app.includes(feature), "Missing application feature hook: " + feature);
   }
   assert.match(html, /id="game-generation"/);
+});
+
+test("catalogue data is separate from the application logic", () => {
+  assert.match(catalogue, /games:\s*\[/);
+  assert.match(catalogue, /fanProjects:\s*\[/);
+  assert.match(catalogue, /mobileApps:\s*\[/);
+  assert.match(app, /window\.PokeSwitchData/);
 });
 
 test("PokéAPI responses are cached in browser storage", () => {
@@ -56,7 +66,7 @@ test("PC requests are explicitly local-only and do not POST to Nintendo", () => 
 });
 
 test("fan directory links to project pages, not hosted ROM or installer files", () => {
-  const block = app.split("const fanProjects = [")[1].split("const mobileApps = [")[0];
+  const block = catalogue.split("fanProjects: [")[1].split("mobileApps: [")[0];
   const urls = [...block.matchAll(/url:"(https:[^"]+)"/g)].map(match => match[1]);
   assert.ok(urls.length >= 10, "Expected a useful curated fan-project directory");
   for (const url of urls) {
@@ -65,7 +75,7 @@ test("fan directory links to project pages, not hosted ROM or installer files", 
   }
 });
 
-test("region themes are defined in both JavaScript and CSS", () => {
+test("region themes are defined in JavaScript and CSS", () => {
   const themeNames = ["league","kanto","johto","hoenn","sinnoh","unova","kalos","alola","galar","paldea"];
   for (const name of themeNames) {
     assert.ok(app.includes('"' + name + '"'), "Missing JS theme: " + name);
