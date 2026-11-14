@@ -132,6 +132,11 @@ test("the app has six independent route views and a persistent navigation shell"
 });
 
 test("navigation changes views rather than scrolling to page anchors", () => {
+  // showView iterates over NodeLists; a single querySelector result is not iterable.
+  assert.ok(app.includes('$(".app-view").forEach(view=>'));
+  assert.ok(app.includes('$(".side-link[data-view-target]").forEach(link=>'));
+  assert.ok(app.includes("const initial=location.hash.slice(1);"));
+  assert.ok(app.includes('showView(initial||"discover",false);'));
   assert.ok(app.includes("function showView("));
   assert.ok(app.includes("history.pushState"));
   assert.ok(app.includes('closest("[data-view-target]")'));
