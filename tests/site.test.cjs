@@ -21,6 +21,7 @@ test("the Windows launcher starts the documented local server", () => {
 test("the page loads local styles, catalogue data and application code", () => {
   assert.match(html, /href="assets\/css\/styles\.css"/);
   assert.match(html, /src="data\/catalogue\.js"/);
+  assert.match(html, /src="data\/regions\.js"/);
   assert.match(html, /src="assets\/js\/app\.js"/);
   assert.ok(fs.existsSync(path.join(root, "assets", "css", "styles.css")));
   assert.ok(fs.existsSync(path.join(root, "assets", "js", "app.js")));
@@ -193,4 +194,32 @@ test("all app screens remain inside one shared main landmark", () => {
   for (const start of viewStarts) {
     assert.ok(start > mainStart && start < mainEnd, "Every app view must stay inside the shared main landmark");
   }
+});
+
+
+test("game cards and the PC wishboard render PokéAPI artwork with a sprite fallback", () => {
+  assert.match(app, /function resolveGameArtwork\(title, region\)/);
+  assert.match(app, /function renderGameArtwork\(game\)/);
+  assert.match(app, /function renderWishArtwork\(request\)/);
+  assert.match(app, /function bindPokemonArtworkFallbacks\(root\)/);
+  assert.ok(app.includes("other/official-artwork/"));
+  assert.ok(app.includes("data-pokemon-art"));
+  assert.ok(app.includes("data-fallback"));
+  assert.ok(app.includes("Koraidon + Miraidon"));
+  assert.ok(app.includes("Zacian + Zamazenta"));
+  assert.ok(app.includes("renderGameArtwork(game)"));
+  assert.ok(app.includes("renderWishArtwork(request)"));
+  assert.ok(app.includes("bindPokemonArtworkFallbacks(grid)"));
+  assert.ok(app.includes("bindPokemonArtworkFallbacks(list)"));
+  assert.match(html, /id="request-list"[^>]*aria-live="polite"/);
+  assert.match(css, /\.game-card-art\{/);
+  assert.match(css, /\.wish-artwork\{/);
+});
+
+test("wishboard input is bounded, duplicate titles are rejected, and votes remain local", () => {
+  assert.match(app, /title\.length<3 \|\| title\.length>90/);
+  assert.match(app, /request\.title\.toLowerCase\(\)===title\.toLowerCase\(\)/);
+  assert.match(app, /function toggleVote\(id\)/);
+  assert.ok(app.includes("poke-switch:voted"));
+  assert.ok(app.includes("poke-switch:requests"));
 });
