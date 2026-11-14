@@ -207,10 +207,10 @@ function renderDex() {
   }
   grid.innerHTML=items.map(item=>
     '<button class="dex-card" type="button" data-pokemon-id="'+item.id+'" aria-label="Open '+escapeHTML(item.name)+' details">'+
-      '<div class="dex-art"><img src="'+spriteUrl(item.id)+'" alt="" loading="lazy" onerror="this.onerror=null;this.src=\'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'+item.id+'.png\'"></div>'+
-      '<span class="dex-number">'+shortDexNumber(item.id)+'</span>'+
-      '<span class="dex-name">'+escapeHTML(item.name.replace(/-/g," "))+'</span>'+
-      '<span class="dex-types"><span class="type-badge">Open profile</span></span>'+
+      '<div class="dex-card-top"><span class="dex-number">'+shortDexNumber(item.id)+'</span><span class="dex-card-label">POKÉMON CARD</span></div>'+
+      '<div class="dex-art"><img src="'+spriteUrl(item.id)+'" alt="Official artwork of '+escapeHTML(item.name.replace(/-/g," "))+'" loading="lazy" decoding="async" onerror="this.onerror=null;this.src=\'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'+item.id+'.png\'"></div>'+
+      '<div class="dex-card-info"><span class="dex-name">'+escapeHTML(item.name.replace(/-/g," "))+'</span>'+
+      '<span class="dex-card-footer">NATIONAL POKÉDEX <span>↗</span></span></div>'+
     '</button>'
   ).join("");
   grid.querySelectorAll("[data-pokemon-id]").forEach(button=>button.addEventListener("click",()=>openPokemon(Number(button.dataset.pokemonId))));
