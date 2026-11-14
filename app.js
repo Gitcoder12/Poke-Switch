@@ -4,7 +4,7 @@ const POKEMON_GAME_HUB = "https://in.portal-pokemon.com/game/";
 const NINTENDO_GAME_HUB = "https://www.nintendo.com/us/store/games/pokemon-games/";
 const NINTENDO_SUPPORT = "https://en-americas-support.nintendo.com/app/home";
 const POKEAPI = "https://pokeapi.co/api/v2";
-const DEX_LIMIT = 1025;
+const DEX_LIMIT = 2000;
 const themes = ["league","kanto","johto","hoenn","sinnoh","unova","kalos","alola","galar","paldea"];
 const themeLabels = {
   league:"Pokémon League",kanto:"Kanto",johto:"Johto",hoenn:"Hoenn",sinnoh:"Sinnoh",
@@ -291,7 +291,7 @@ function renderDex() {
       '<div class="dex-art"><img src="'+spriteUrl(item.id)+'" alt="" loading="lazy" onerror="this.onerror=null;this.src=\'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'+item.id+'.png\'"></div>'+
       '<span class="dex-number">'+shortDexNumber(item.id)+'</span>'+
       '<span class="dex-name">'+escapeHTML(item.name.replace(/-/g," "))+'</span>'+
-      '<span class="dex-types"><span class="type-badge">Tap for types</span></span>'+
+      '<span class="dex-types"><span class="type-badge">Open profile</span></span>'+
     '</button>'
   ).join("");
   grid.querySelectorAll("[data-pokemon-id]").forEach(button=>button.addEventListener("click",()=>openPokemon(Number(button.dataset.pokemonId))));
@@ -311,7 +311,7 @@ async function loadDexType(type) {
   try {
     const response=await getJSON("/type/"+encodeURIComponent(type));
     const ids=new Set(response.pokemon.map(entry=>pokemonIdFromUrl(entry.pokemon.url)));
-    dexFiltered=pokemonList.filter(item=>ids.has(item.id) && (!dexQuery.trim() || item.name.includes(dexQuery.trim().toLowerCase()) || String(item.id).includes(dexQuery.trim().replace(/^#/,""))));
+    dexFiltered=pokemonList.filter(item=>ids.has(item.id) && (!dexQuery.trim() || item.name.includes(dexQuery.trim().toLowerCase()) || String(item.id).includes(dexQuery.trim().toLowerCase().replace(/^#/,""))));
     renderDex();
   } catch(error) {
     $("#dex-grid").innerHTML='<div class="empty-state">Type filter is unavailable right now. '+escapeHTML(error.message)+'</div>';
@@ -322,7 +322,7 @@ async function initDex() {
   dexLoading=true;
   $("#dex-grid").innerHTML='<div class="empty-state">Loading the National Pokédex…</div>';
   try {
-    const data=await getJSON("/pokemon?limit="+DEX_LIMIT+"&offset=0");
+    const data=await getJSON("/pokemon-species?limit="+DEX_LIMIT+"&offset=0");
     pokemonList=data.results.map(item=>({name:item.name,id:pokemonIdFromUrl(item.url)})).filter(item=>item.id>0);
     pokemonList.sort((a,b)=>a.id-b.id);
     dexFiltered=pokemonList;
@@ -394,7 +394,7 @@ function initDexDialog() {
 
 async function loadDailyFact() {
   const day=Math.floor(Date.now()/86400000);
-  const id=(day%DEX_LIMIT)+1;
+  const id=(day%1025)+1;
   const art=$("#daily-art");
   $("#daily-name").textContent="Loading today's entry…";
   $("#daily-text").textContent="Looking up a Pokédex entry for today.";
