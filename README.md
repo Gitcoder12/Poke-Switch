@@ -80,3 +80,22 @@ Poke-Switch is not an official Nintendo or Pokémon product. Official brand name
 ## Disclaimer
 
 Poke-Switch is an independent fan project and is not affiliated with, endorsed by or sponsored by Nintendo, GAME FREAK, Creatures Inc. or The Pokémon Company. Pokémon names, characters and artwork belong to their respective rights holders.
+
+---
+
+## Engineering Audit & Handover — 2026-11-17
+
+**Reviewed commit:** `f763c79bf1cd38a359dac224a4c426ecf98c4be9` (`main`). Static inspection covered `assets/js/app.js`, catalogue structure, and `tests/site.test.cjs`; tests were not executed.
+
+### Confirmed findings
+- The project has a separated static catalogue, browser application, local-storage wrapper, and a site test file.
+- The test suite primarily checks page structure, local asset wiring, catalogue separation, API/cache hooks, and the local-only PC request behavior. These checks do not constitute full browser end-to-end coverage of the PokéAPI flow or every UI interaction.
+- Pokédex data depends on the external PokéAPI and sprite repository; availability, rate limits, and returned variants can change.
+- The README correctly states that PC requests/votes remain local to each visitor's browser and are not global vote totals. Preserve this limitation.
+
+### Next actions
+1. Run `node --check assets/js/app.js` and `node --test tests/site.test.cjs` in CI and record the result.
+2. Add browser-level tests for API errors, cache expiry, search/filter behavior, and local-storage failure.
+3. Keep curated catalogue entries and third-party API data clearly distinguished, with source links and update dates.
+
+**Verification status:** static source/test inspection only; no test execution or browser end-to-end run was performed.
