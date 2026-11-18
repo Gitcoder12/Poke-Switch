@@ -99,3 +99,10 @@ Poke-Switch is an independent fan project and is not affiliated with, endorsed b
 3. Keep curated catalogue entries and third-party API data clearly distinguished, with source links and update dates.
 
 **Verification status:** static source/test inspection only; no test execution or browser end-to-end run was performed.
+
+---
+
+## Examples Used
+- Discovering Pokémon by type and region
+- Exploring the nine-region atlas and Pokédex entries
+- Browsing official mobile games and curated fan projects
