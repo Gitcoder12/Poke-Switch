@@ -99,3 +99,21 @@ Poke-Switch is an independent fan project and is not affiliated with, endorsed b
 3. Keep curated catalogue entries and third-party API data clearly distinguished, with source links and update dates.
 
 **Verification status:** static source/test inspection only; no test execution or browser end-to-end run was performed.
+
+
+---
+
+## Branch Activity & Development History
+
+**Audit date:** 2026-11-18 · **Comparison base:** `main`
+
+| Branch | Difference from `main` | Observed work / changed paths |
+|---|---:|---|
+| `docs/portfolio-operating-kit-2026-11-13` | 0 ahead / 3 behind | No unique commits relative to current `main`; branch is behind |
+| `docs/project-status-2026-11-16-poke-switch` | 1 / 1 | Project status snapshot: `PROJECT_STATUS.md` |
+
+### Open pull requests observed during this audit
+
+- [PR #4 — project status snapshot](https://github.com/Gitcoder12/Poke-Switch/pull/4)
+
+**Verification boundary:** Git metadata and changed paths only. Review PR head/base and CI before merging. No branches have been merged or deleted by this documentation update.
