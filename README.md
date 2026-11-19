@@ -106,3 +106,27 @@ Poke-Switch is an independent fan project and is not affiliated with, endorsed b
 - Discovering Pokémon by type and region
 - Exploring the nine-region atlas and Pokédex entries
 - Browsing official mobile games and curated fan projects
+
+
+---
+
+## Comparison with Existing Open-Source Projects
+
+Poke-Switch is documented as an independent Pokémon discovery and catalogue website with game browsing, a region atlas, Pokédex, fan-project directory and local wishboard. These projects are relevant data and community references, not exact equivalents.
+
+| Project | Established focus | Relationship to Poke-Switch |
+|---|---|---|
+| [PokéAPI](https://github.com/PokeAPI/pokeapi) | Open RESTful Pokémon data API for species, moves, types and related records | A core data source for the Pokédex; Poke-Switch's value is the combined user-facing discovery experience and curated sections around the API data. |
+| [PokéAPI sprites](https://github.com/PokeAPI/sprites) | Community-maintained Pokémon sprite and artwork assets | An upstream asset source; Poke-Switch presents available variants without claiming to upscale or own the artwork. |
+| [Pokémon Showdown](https://github.com/smogon/pokemon-showdown) | Online battle simulator and competitive Pokémon community platform | A different product category focused on battle simulation; Poke-Switch focuses on discovery, catalogue browsing and resource navigation. |
+
+### Where Poke-Switch is different
+- **Multi-section discovery:** the README combines game catalogue, region atlas, Pokédex, fan projects and mobile-game links in one interface.
+- **Source-aware presentation:** the project documents PokéAPI and sprite provenance and distinguishes official links from unofficial fan projects.
+- **Local-only wishboard:** PC requests and votes are stored in the visitor's browser rather than represented as global vote totals.
+
+### Where established projects are stronger
+PokéAPI provides structured data at scale; Pokémon Showdown has a mature battle engine and competitive ecosystem. Poke-Switch should not claim to be an official Pokémon product or an exhaustive catalogue. Its value is the curated discovery interface and navigation experience.
+
+### Evidence and licensing limitations
+Keep official and fan-made resources clearly separated, preserve attribution and outbound links, and do not host ROMs or copyrighted game files. External API availability and image variants can change. Test offline/error states, mobile navigation and data-source failures. This is a scope comparison, not a catalogue-completeness benchmark.
