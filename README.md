@@ -106,3 +106,9 @@ Poke-Switch is an independent fan project and is not affiliated with, endorsed b
 - Discovering Pokémon by type and region
 - Exploring the nine-region atlas and Pokédex entries
 - Browsing official mobile games and curated fan projects
+
+---
+
+## Repository navigation
+
+[Alphabetical file index](FILE_INDEX.md)
